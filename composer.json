@@ -1,0 +1,12 @@
+{
+    "name": "ibu/webprogramming",
+    "description": "web programming project",
+    "license": "apache2",
+    "authors": [
+        {
+            "name": "KospoAmela",
+            "email": "kospoamela1@gmail.com"
+        }
+    ],
+    "require": {}
+}
