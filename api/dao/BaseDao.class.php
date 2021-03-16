@@ -4,7 +4,7 @@ require_once dirname(__FILE__)."/../config.php";
 
 class BaseDao
 {
-    private $connection;
+    protected $connection;
 
     public function __construct()
     {
@@ -15,11 +15,6 @@ class BaseDao
         } catch(PDOException $e) {
           echo "Connection failed: " . $e->getMessage();
         }
-    }
-
-    public function insert()
-    {
-
     }
 
     public function query($query, $parameter)
