@@ -1,23 +1,21 @@
 <?php
-class JobDao extends BaseDao{
-  public function get_company_id($job_id){
 
-  }
+require_once dirname(__FILE__)."/BaseDao.class.php";
 
-  public function get_job_title($job_id){
+class JobDao extends BaseDao
+{
+    public function getJobById($job_id)
+    {
+        return $this->query("SELECT * FROM jobs WHERE job_id = :job_id", ["job_id" => $job_id]);
+    }
 
-  }
+    public function getJobsByType($type_id)
+    {
+        return $this->query("SELECT * FROM jobs WHERE type_id = :type_id", ["type_id" => $type_id]);
+    }
 
-  public function get_description($job_id){
-
-  }
-
-  public function get_category_id($job_id){
-
-  }
-
-  public function get_type_id($jonb_id){
-    
-  }
+    public function getJobsByCategory($category_id)
+    {
+        return $this->query("SELECT * FROM jobs WHERE category_id = :category_id", ["category_id" => $category_id]);
+    }
 }
- ?>

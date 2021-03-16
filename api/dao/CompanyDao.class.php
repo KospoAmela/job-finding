@@ -1,13 +1,15 @@
 <?php
-class CompanyDao extends BaseDao{
 
-  public function get_company_by_email($email){
+require_once dirname(__FILE__)."/BaseDao.class.php";
 
-  }
+class CompanyDao extends BaseDao
+{
+    public function getCompanyByEmail($email){
+        return $this->query("SELECT * FROM companies WHERE email = :email", ["email" => $email]);
+    }
 
-  public function get_company_by_id($id){
-    
-  }
+    public function getCompanyById($company_id){
+        return $this->query("SELECT * FROM companies WHERE company_id = :company_id", ["company_id" => $company_id]);
+    }
+
 }
-
- ?>
