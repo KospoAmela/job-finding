@@ -12,4 +12,7 @@ class CompanyDao extends BaseDao
         return $this->query("SELECT * FROM companies WHERE company_id = :company_id", ["company_id" => $company_id]);
     }
 
+    public function updateCompany($id, $company){
+        $this->update("companies", $id, $company);
+    }
 }

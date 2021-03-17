@@ -30,8 +30,17 @@ class BaseDao
         return reset($results);
     }
 
-    public function update()
+    public function update($tableName, $id, $table)
     {
+      $query = "UPDATE ".$tableName." SET ";
+      foreach($table as $name => $value){
+        $query .= $name. "=:".$name.", ";
+      }
+      $query = substr($query, 0, -2);
+      $query .= " WHERE id=:id";
+      $stmt = $this->connection->prepare($query);
+      $table['id'] = $id;
+      $stmt->execute($table);
 
     }
 }

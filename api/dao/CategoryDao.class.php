@@ -9,4 +9,5 @@ class CategoryDao extends BaseDao
         return $this->query("SELECT * FROM categories WHERE category_id = :category_id", ["category_id" => $category_id]);
     }
 
+
 }

@@ -8,5 +8,6 @@ class TypeDao extends BaseDao
     {
         return $this->query("SELECT * FROM types WHERE type_id = :type_id", ["type_id" => $type_id]);
     }
+
 }
  ?>

@@ -18,4 +18,8 @@ class JobDao extends BaseDao
     {
         return $this->query("SELECT * FROM jobs WHERE category_id = :category_id", ["category_id" => $category_id]);
     }
+
+    public function updateJob($id, $job){
+      $this->update("jobs", $id, $job);
+    }
 }
