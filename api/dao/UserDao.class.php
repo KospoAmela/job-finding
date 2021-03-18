@@ -8,16 +8,14 @@ class UserDao extends BaseDao
         return $this->queryUnique("SELECT * FROM users WHERE email = :email", ["email" => $email]);
     }
 
-    public function getUserById($user_id)
+    public function getUserById($id)
     {
-        return $this->queryUnique("SELECT * FROM users WHERE user_id = :user_id", ["user_id" => $user_id]);
+        return $this->queryUnique("SELECT * FROM users WHERE id = :id", ["id" => $id]);
     }
 
     public function insertUser($user)
     {
-      $sql = "INSERT INTO users (name, surname, email, password, username) VALUES (:name, :surname, :email, :password, :username)";
-      $stmt= $this->connection->prepare($sql);
-      $stmt->execute($user);
+      $this->insert($user, "users");
     }
 
     public function updateUser($id, $user)

@@ -17,30 +17,47 @@ class BaseDao
         }
     }
 
-    public function query($query, $parameter)
+    protected function query($query, $parameter)
     {
       $stmt = $this->connection->prepare($query);
       $stmt->execute($parameter);
       return $user = $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function queryUnique($query, $parameter) //one result or nothing
+    protected function queryUnique($query, $parameter) //one result or nothing
     {
         $results = $this->query($query, $parameter);
         return reset($results);
     }
 
-    public function update($tableName, $id, $table)
+    protected function update($tableName, $id, $table)
     {
-      $query = "UPDATE ".$tableName." SET ";
-      foreach($table as $name => $value){
-        $query .= $name. "=:".$name.", ";
-      }
-      $query = substr($query, 0, -2);
-      $query .= " WHERE id=:id";
-      $stmt = $this->connection->prepare($query);
-      $table['id'] = $id;
-      $stmt->execute($table);
+        $query = "UPDATE ".$tableName." SET ";
+        foreach($table as $name => $value){
+          $query .= $name. "=:".$name.", ";
+        }
+        $query = substr($query, 0, -2);
+        $query .= " WHERE id=:id";
+        $stmt = $this->connection->prepare($query);
+        $table['id'] = $id;
+        $stmt->execute($table);
+    }
 
+    protected function insert($table, $tableName)
+    {
+        $query = "INSERT INTO ".$tableName." (";
+        $values =" VALUES (";
+        foreach ($table as $key => $value) {
+            $query .= $key.", ";
+            $values .= ":".$key.", ";
+        }
+        $query = substr($query, 0, -2);
+        $values = substr($values, 0, -2);
+
+        $query .=")".$values.")";
+
+        echo $query."                   //query test";
+        $stmt = $this->connection->prepare($query);
+        $stmt->execute($table);
     }
 }
