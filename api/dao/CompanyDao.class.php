@@ -6,12 +6,12 @@ class CompanyDao extends BaseDao
 {
     public function getCompanyByEmail($email)
     {
-        return $this->query("SELECT * FROM companies WHERE email = :email", ["email" => $email]);
+        return $this->queryUnique("SELECT * FROM companies WHERE email = :email", ["email" => $email]);
     }
 
     public function getCompanyById($company_id)
     {
-        return $this->query("SELECT * FROM companies WHERE company_id = :company_id", ["company_id" => $company_id]);
+        return $this->queryUnique("SELECT * FROM companies WHERE company_id = :company_id", ["company_id" => $company_id]);
     }
 
     public function updateCompany($id, $company)

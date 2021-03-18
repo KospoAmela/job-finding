@@ -6,7 +6,7 @@ class JobDao extends BaseDao
 {
     public function getJobById($job_id)
     {
-        return $this->query("SELECT * FROM jobs WHERE job_id = :job_id", ["job_id" => $job_id]);
+        return $this->queryUnique("SELECT * FROM jobs WHERE job_id = :job_id", ["job_id" => $job_id]);
     }
 
     public function getJobsByType($type_id)

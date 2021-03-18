@@ -60,4 +60,5 @@ class BaseDao
         $stmt = $this->connection->prepare($query);
         $stmt->execute($table);
     }
+
 }
