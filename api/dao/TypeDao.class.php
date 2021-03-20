@@ -18,5 +18,9 @@ class TypeDao extends BaseDao
         $type = $this->getTypeById($id);
         return $type['name_of_type'];
     }
+
+    public function getAllTypes(){
+      return $this->getAll("types");
+    }
 }
  ?>

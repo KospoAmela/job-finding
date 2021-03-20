@@ -20,4 +20,8 @@ class CategoryDao extends BaseDao
         return $category['name_of_category'];
     }
 
+    public function getAllCategories(){
+      return $this->getAll("categories");
+    }
+
 }

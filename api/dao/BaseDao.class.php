@@ -61,4 +61,9 @@ class BaseDao
         $stmt->execute($table);
     }
 
+    protected function getAll($tableName)
+    {
+        $query = "SELECT * FROM ".$tableName;
+        return $this->query($query, []);
+    }
 }

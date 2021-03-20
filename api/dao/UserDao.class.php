@@ -22,4 +22,8 @@ class UserDao extends BaseDao
     {
       $this->update("users", $id, $user);
     }
+
+    public function getAllUsers(){
+      return $this->getAll("users");
+    }
   }

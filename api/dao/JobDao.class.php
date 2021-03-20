@@ -26,9 +26,12 @@ class JobDao extends BaseDao
 
     public function insertJob($job)
     {
-        $job['posted_at']=date("Y-m-d H:i:s");  
-      //  $date = new DateTime();
-      //  $job['posted_at'] = $date;
+        $job['posted_at']=date("Y-m-d H:i:s");
+      //  'deadline' => date("Y-m-d H:i:s",mktime(23, 59, 59, 3, 29, 2021))
         $this->insert($job, "jobs");
+    }
+
+    public function getAllJobs(){
+      return $this->getAll("jobs");
     }
 }

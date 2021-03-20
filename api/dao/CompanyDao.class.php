@@ -23,4 +23,8 @@ class CompanyDao extends BaseDao
     {
         $this->insert($company, "companies");
     }
+
+    public function getAllCompanies(){
+      return $this->getAll("companies");
+    }
 }
