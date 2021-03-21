@@ -15,12 +15,12 @@ class UserDao extends BaseDao
 
     public function insertUser($user)
     {
-      $this->insert($user, "users");
+      return $this->insert($user, "users");
     }
 
     public function updateUser($id, $user)
     {
-      $this->update("users", $id, $user);
+      return $this->update("users", $id, $user);
     }
 
     public function getAllUsers(){

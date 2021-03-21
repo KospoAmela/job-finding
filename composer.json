@@ -8,5 +8,7 @@
             "email": "kospoamela1@gmail.com"
         }
     ],
-    "require": {}
+    "require": {
+        "mikecao/flight": "^1.3"
+    }
 }
