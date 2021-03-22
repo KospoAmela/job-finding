@@ -4,9 +4,9 @@ require_once dirname(__FILE__)."/BaseDao.class.php";
 
 class JobDao extends BaseDao
 {
-    public function getJobById($job_id)
+    public function getJobById($id)
     {
-        return $this->queryUnique("SELECT * FROM jobs WHERE job_id = :job_id", ["job_id" => $job_id]);
+        return $this->queryUnique("SELECT * FROM jobs WHERE id = :id", ["id" => $id]);
     }
 
     public function getJobsByType($type_id)
