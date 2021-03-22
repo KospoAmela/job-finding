@@ -31,7 +31,13 @@ class JobDao extends BaseDao
         $this->insert($job, "jobs");
     }
 
-    public function getAllJobs(){
-      return $this->getAll("jobs");
+    public function getAllJobs()
+    {
+        return $this->getAll("jobs");
+    }
+
+    public function getAllJobsPaginated()
+    {
+        return $this->getAllPaginated("jobs");
     }
 }

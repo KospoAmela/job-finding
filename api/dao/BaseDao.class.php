@@ -53,10 +53,8 @@ class BaseDao
         }
         $query = substr($query, 0, -2);
         $values = substr($values, 0, -2);
-
         $query .=")".$values.")";
-
-        echo $query."                   //query test";
+        
         $stmt = $this->connection->prepare($query);
         $stmt->execute($table);
     }
@@ -64,6 +62,11 @@ class BaseDao
     protected function getAll($tableName)
     {
         $query = "SELECT * FROM ".$tableName;
+        return $this->query($query, []);
+    }
+
+    protected function getAllPaginated($tableName, $offset = 0, $limit = 25){
+        $query = "SELECT * FROM ".$tableName." LIMIT ".$limit." OFFSET ".$offset;
         return $this->query($query, []);
     }
 }
