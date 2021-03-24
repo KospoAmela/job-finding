@@ -23,6 +23,15 @@ require_once dirname(__FILE__)."/routes/TypeRoutes.php";
 require_once dirname(__FILE__)."/routes/CategoryRoutes.php";
 require_once dirname(__FILE__)."/routes/CompanyRoutes.php";
 
+
+Flight::map('query', function($name, $default_value = null){
+    $request = Flight::request();
+
+    $query_param = @$request->query->getData()[$name];
+    $query_param = $query_param ? $query_param : $default_value;
+
+    return $query_param;
+});
 Flight::start();
 
  ?>

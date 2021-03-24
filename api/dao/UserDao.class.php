@@ -26,4 +26,8 @@ class UserDao extends BaseDao
     public function getAllUsers(){
       return $this->getAll("users");
     }
+
+    public function getAllUsersPaginated($offset, $limit){
+      return $this->getAllPaginated("users", $offset, $limit);
+    }
   }

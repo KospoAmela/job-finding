@@ -54,7 +54,7 @@ class BaseDao
         $query = substr($query, 0, -2);
         $values = substr($values, 0, -2);
         $query .=")".$values.")";
-        
+
         $stmt = $this->connection->prepare($query);
         $stmt->execute($table);
     }
