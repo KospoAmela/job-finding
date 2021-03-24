@@ -4,8 +4,15 @@
 Flight::route('GET /users', function(){
     $offset = Flight::query("offset", 0);
     $limit = Flight::query("limit", 30);
-    $users = Flight::userDao()->getAllUsersPaginated($offset, $limit);
-    print_r($users);
+
+    $search = Flight::query("search");
+
+    if($search){
+        Flight::json(Flight::userDao()->searchUsers($search, $offset, $limit));
+    }else{
+        Flight::json(Flight::userDao()->getAllUsersPaginated($offset, $limit));
+    }
+
 });
 
 Flight::route('GET /users/@id', function($id){

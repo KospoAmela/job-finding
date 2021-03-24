@@ -30,6 +30,12 @@ class CompanyDao extends BaseDao
 
     public function getAllCompaniesPaginated($offset = 0, $limit = 25)
     {
-        returh $this->getAllPaginated("companies", $offset, $limit);
+        return $this->getAllPaginated("companies", $offset, $limit);
+    }
+
+    public function searchCompanies($search, $offset, $limit){
+      return $this->query("SELECT * FROM companies
+                           WHERE name LIKE CONCAT('%', :name, '%') 
+                           LIMIT ${limit} OFFSET ${offset}", ["name" => $search]);
     }
 }

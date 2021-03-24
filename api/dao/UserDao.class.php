@@ -30,4 +30,10 @@ class UserDao extends BaseDao
     public function getAllUsersPaginated($offset, $limit){
       return $this->getAllPaginated("users", $offset, $limit);
     }
+
+    public function searchUsers($search, $offset, $limit){
+      return $this->query("SELECT * FROM users
+                           WHERE username LIKE CONCAT('%', :username, '%')
+                           LIMIT ${limit} OFFSET ${offset}", ["username" => $search]);
+    }
   }

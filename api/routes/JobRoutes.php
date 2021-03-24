@@ -2,6 +2,12 @@
 Flight::route('GET /jobs', function(){
     $offset = Flight::query("offset", 0);
     $limit = Flight::query("limit", 30);
+    $search = Flight::query("search");
+    if($search){
+        Flight::json(Flight::jobDao()->searchJobs($search, $offset, $limit));
+    }else{
+        Flight::json(Flight::jobDao()->getAllJobsPaginated($offset, $limit));
+    }
     $jobs = Flight::jobDao()->getAllJobsPaginated($offset, $limit);
     print_r($jobs);
 });

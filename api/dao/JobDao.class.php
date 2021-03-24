@@ -40,4 +40,10 @@ class JobDao extends BaseDao
     {
         return $this->getAllPaginated("jobs");
     }
+
+    public function searchJobs($search, $offset, $limit){
+      return $this->query("SELECT * FROM jobs
+                           WHERE title LIKE CONCAT('%', :title, '%')
+                           LIMIT ${limit} OFFSET ${offset}", ["title" => $search]);
+    }
 }
