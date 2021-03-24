@@ -1,22 +1,9 @@
 <<?php
 
-Flight::map('query', function($name, $default_value = null){
-    $request = Flight::request();
-
-    $query_param = @$request->query->getData()[$name];
-    $query_param = $query_param ? $query_param : $default_value;
-
-    return $query_param;
-});
 
 Flight::route('GET /users', function(){
     $offset = Flight::query("offset", 0);
-
     $limit = Flight::query("limit", 30);
-
-    print_r($offset);
-    print_r($limit);
-
     $users = Flight::userDao()->getAllUsersPaginated($offset, $limit);
     print_r($users);
 });

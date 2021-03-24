@@ -27,4 +27,9 @@ class CompanyDao extends BaseDao
     public function getAllCompanies(){
       return $this->getAll("companies");
     }
+
+    public function getAllCompaniesPaginated($offset = 0, $limit = 25)
+    {
+        returh $this->getAllPaginated("companies", $offset, $limit);
+    }
 }

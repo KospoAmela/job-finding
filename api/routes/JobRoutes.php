@@ -1,7 +1,9 @@
 <?php
 Flight::route('GET /jobs', function(){
-    $jobs = Flight::jobDao()->getAllJobs();
-    Flight::json($jobs);
+    $offset = Flight::query("offset", 0);
+    $limit = Flight::query("limit", 30);
+    $jobs = Flight::jobDao()->getAllJobsPaginated($offset, $limit);
+    print_r($jobs);
 });
 
 Flight::route('GET /jobs/@id', function($id){

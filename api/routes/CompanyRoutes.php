@@ -1,7 +1,9 @@
 <?php
 Flight::route('GET /companies', function(){
-    $companies = Flight::companyDao()->getAllCompanies();
-    Flight::json($companies);
+    $offset = Flight::query("offset", 0);
+    $limit = Flight::query("limit", 30);
+    $companies = Flight::companyDao()->getAllCompaniesPaginated($offset, $limit);
+    print_r($companies);
 });
 
 Flight::route('GET /companies/@id', function($id){
