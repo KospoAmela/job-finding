@@ -4,6 +4,10 @@ require_once dirname(__FILE__)."/BaseDao.class.php";
 
 class CategoryDao extends BaseDao
 {
+    public function __construct(){
+        parent::__construct("categories");
+    }
+
     public function getCategoryById($id)
     {
         return $this->queryUnique("SELECT * FROM categories WHERE id = :id", ["id" => $id]);

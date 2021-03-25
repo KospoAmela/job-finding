@@ -4,6 +4,10 @@ require_once dirname(__FILE__)."/BaseDao.class.php";
 
 class TypeDao extends BaseDao
 {
+    public function __construct(){
+        parent::__construct("types");
+    }
+    
     public function getTypeById($id)
     {
         return $this->queryUnique("SELECT * FROM types WHERE id = :id", ["id" => $id]);

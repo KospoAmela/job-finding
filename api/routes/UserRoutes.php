@@ -9,7 +9,7 @@ Flight::route('GET /users', function(){
 });
 
 Flight::route('GET /users/@id', function($id){
-    $user = Flight::userDao()->getUserById($id);
+    $user = Flight::userService()->getById($id);
     Flight::json($user);
 });
 
