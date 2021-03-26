@@ -47,7 +47,7 @@ class BaseDao
         return $table;
     }
 
-    protected function insert($table, $tableName)
+    protected function insert($tableName, $table)
     {
         $query = "INSERT INTO ".$tableName." (";
         $values =" VALUES (";
@@ -79,7 +79,7 @@ class BaseDao
     }
 
     public function getById($id){
-        return $this->query_unique("SELECT * FROM ".$this->table." WHERE id = :id", ["id" => $id]);
+        return $this->queryUnique("SELECT * FROM ".$this->table." WHERE id = :id", ["id" => $id]);
     }
 
     public function add($entity){

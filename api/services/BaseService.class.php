@@ -10,7 +10,7 @@ class BaseService {
     }
 
     public function add($data){
-        return $this->dao->insert($data);
+        return $this->dao->add($data);
     }
 
     public function update($id, $data){
