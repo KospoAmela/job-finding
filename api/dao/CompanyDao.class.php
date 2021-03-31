@@ -4,6 +4,9 @@ require_once dirname(__FILE__)."/BaseDao.class.php";
 
 class CompanyDao extends BaseDao
 {
+    public function __construct(){
+        parent::__construct("companies");
+    }
     public function getCompanyByEmail($email)
     {
         return $this->queryUnique("SELECT * FROM companies WHERE email = :email", ["email" => $email]);
