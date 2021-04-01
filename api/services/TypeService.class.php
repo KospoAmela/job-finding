@@ -16,5 +16,14 @@ class TypeService extends BaseService{
           return $this->dao->getAllTypes();
       }
   }
+
+  public function add($type){
+      if(!isset($type['name_of_type'])) throw new \Exception("Name is missing", 1);
+      return parent::add($type);
+  }
+
+  public function getById($id){
+      return parent::getById($id);
+  }
 }
  ?>
