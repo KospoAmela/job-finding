@@ -16,5 +16,18 @@ class CompanyService extends BaseService{
             return $this->dao->getAllCompaniesPaginated($offset, $limit);
         }
     }
+
+    public function add($company){
+        if(!isset($company['name'])) throw new \Exception("Name is missing", 1);
+        return parent::add($company);
+    }
+
+    public function update($id, $company){
+        return parent::update($id, $company);
+    }
+
+    public function getById($id){
+        return parent::getById($id);
+    }
 }
  ?>
