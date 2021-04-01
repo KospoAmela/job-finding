@@ -25,6 +25,19 @@ class JobService extends BaseService{
             return $this->dao->getAllJobsPaginated($offset, $limit);
         }
     }
+
+    public function add($job){
+        if(!isset($job['title'])) throw new \Exception("Name is missing", 1);
+        return parent::add($job);
+    }
+
+    public function update($id, $job){
+        return parent::update($id, $job);
+    }
+
+    public function getById($id){
+        return parent::getById($id);
+    }
 }
 
  ?>
