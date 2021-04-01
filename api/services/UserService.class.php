@@ -16,5 +16,18 @@ class UserService extends BaseService{
             return $this->dao->getAllUsersPaginated($offset, $limit);
         }
     }
+
+    public function add($user){
+        if(!isset($user['name'])) throw new \Exception("Name is missing", 1);
+        return parent::add($user);
+    }
+
+    public function update($id, $user){
+        return parent::update($id, $user);
+    }
+
+    public function getById($id){
+        return parent::getById($id);
+    }
 }
 ?>
