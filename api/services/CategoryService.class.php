@@ -16,5 +16,14 @@ class CategoryService extends BaseService{
           return $this->dao->getAllCategories();
       }
   }
+
+  public function add($category){
+      if(!isset($category['name_of_category'])) throw new \Exception("Name is missing", 1);
+      return parent::add($category);
+  }
+
+  public function getById($id){
+      return parent::getById($id);
+  }
 }
  ?>
