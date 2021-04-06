@@ -17,17 +17,19 @@ class UserService extends BaseService{
         }
     }
 
-    public function add($user){
-        if(!isset($user['name'])) throw new \Exception("Name is missing", 1);
-        return parent::add($user);
-    }
-
     public function update($id, $user){
         return parent::update($id, $user);
     }
 
     public function getById($id){
         return parent::getById($id);
+    }
+
+    public function register($user){
+        if(!isset($user['username'])){
+            throw new \Exception("Username is required", 1);
+
+        }
     }
 }
 ?>

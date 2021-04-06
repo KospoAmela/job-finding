@@ -41,4 +41,9 @@ class CompanyDao extends BaseDao
                            WHERE name LIKE CONCAT('%', :name, '%')
                            LIMIT ${limit} OFFSET ${offset}", ["name" => $search]);
     }
+
+    public function getCompanyByName($companyName){
+        return $this->queryUnique("SELECT * FROM companies
+                             WHERE name LIKE CONCAT('%', :name, '%')", ["name" => $companyName]);
+    }
 }

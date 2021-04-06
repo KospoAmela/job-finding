@@ -27,9 +27,14 @@ class TypeDao extends BaseDao
       return $this->getAll("types");
     }
 
-    public function searchTypes($search, $offset, $limit){
+    public function searchTypes($search, $offset = 0, $limit = 30){
       return $this->query("SELECT * FROM types
                            WHERE name_of_type LIKE CONCAT('%', :name_of_type, '%')", ["name_of_type" => $search]);
+    }
+
+    public function getTypeByName($typeName){
+      return $this->query("SELECT * FROM types
+                           WHERE name_of_type LIKE CONCAT('%', :name_of_type, '%')", ["name_of_type" => $typeName]);
     }
 }
  ?>

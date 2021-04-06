@@ -32,4 +32,9 @@ class CategoryDao extends BaseDao
       return $this->query("SELECT * FROM categories
                            WHERE name_of_category LIKE CONCAT('%', :name_of_category, '%')", ["name_of_category" => $search]);
     }
+
+    public function getByCategoryByName($categoryName){
+      return $this->queryUnique("SELECT * FROM categories
+                           WHERE name_of_category LIKE CONCAT('%', :name_of_category, '%')", ["name_of_category" => $categoryName]);
+    }
 }

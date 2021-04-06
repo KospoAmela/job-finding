@@ -29,5 +29,11 @@ class CompanyService extends BaseService{
     public function getById($id){
         return parent::getById($id);
     }
+
+    public function register($company){
+        if(!isset($company['name'])){
+            throw new \Exception("Name is required", 1);
+        }
+    }
 }
  ?>

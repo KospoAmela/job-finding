@@ -26,17 +26,44 @@ class JobService extends BaseService{
         }
     }
 
-    public function add($job){
-        if(!isset($job['title'])) throw new \Exception("Name is missing", 1);
-        return parent::add($job);
-    }
-
     public function update($id, $job){
         return parent::update($id, $job);
     }
 
     public function getById($id){
         return parent::getById($id);
+    }
+
+    public function addJob($job){
+        if(!isset($job['title'])){
+            throw new \Exception("Title is required", 1);
+        }
+        if(!isset($job['companyName'])){
+            throw new \Exception("Company name is required", 1);
+        }
+        if(!isset($job['typeName'])){
+            throw new \Exception("Type name is required", 1);
+        }
+        if(!isset($job['categoryName'])){
+            throw new \Exception("Category name is required", 1);
+        }
+
+        $company = $companyDao->getCompanyByName($job['companyName']);
+        $category = $categoryDao->getByCategoryByName($job['categoryName']);
+        $type = $typeDao->getTypeByName($job['$typeName']);
+
+        $jobDatabase = [
+            'posted_at' => date(Config::DATE_FORMAT),
+            'deadline' => $job['deadline'],
+            'company_id' => $company['id'],
+            'type_id' => $type['id'],
+            'description' => $job['description'],
+            'title' => $job['title'],
+            'country' => $job['country'],
+            'city' => $job['city']
+        ];
+
+        return parent::add($jobDatabase);
     }
 }
 
