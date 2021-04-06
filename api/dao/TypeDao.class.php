@@ -33,8 +33,8 @@ class TypeDao extends BaseDao
     }
 
     public function getTypeByName($typeName){
-      return $this->query("SELECT * FROM types
-                           WHERE name_of_type LIKE CONCAT('%', :name_of_type, '%')", ["name_of_type" => $typeName]);
+      return $this->queryUnique("SELECT * FROM types
+        WHERE name_of_type LIKE CONCAT('%', :name_of_type, '%')", ["name_of_type" => $typeName]);
     }
 }
  ?>

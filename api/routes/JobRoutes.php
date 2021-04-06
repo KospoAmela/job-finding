@@ -15,7 +15,7 @@ Flight::route('GET /jobs/@id', function($id){
 Flight::route('POST /jobs', function(){
     $request = Flight::request();
     $data = $request->data->getData();
-    $job = Flight::jobService()->add($data);
+    $job = Flight::jobService()->addJob($data);
     Flight::json($data);
 });
 

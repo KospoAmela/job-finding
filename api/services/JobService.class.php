@@ -39,33 +39,32 @@ class JobService extends BaseService{
         if(!isset($job['title'])){
             throw new \Exception("Title is required", 1);
         }
-        if(!isset($job['companyName'])){
+        if(!isset($job['company_name'])){
             throw new \Exception("Company name is required", 1);
         }
-        if(!isset($job['typeName'])){
+        if(!isset($job['type_name'])){
             throw new \Exception("Type name is required", 1);
         }
-        if(!isset($job['categoryName'])){
+        if(!isset($job['category_name'])){
             throw new \Exception("Category name is required", 1);
         }
         //get IDs by name
-        $company = $companyDao->getCompanyByName($job['companyName']);
-        $category = $categoryDao->getByCategoryByName($job['categoryName']);
-        $type = $typeDao->getTypeByName($job['$typeName']);
+        $company = $this->companyDao->getCompanyByName($job['company_name']);
+        $category = $this->categoryDao->getByCategoryByName($job['category_name']);
+        $type = $this->typeDao->getTypeByName($job['type_name']);
 
-        //object to be inserted into database
-        $jobDatabase = [
+
+        return parent::add([
             'posted_at' => date(Config::DATE_FORMAT),
             'deadline' => $job['deadline'],
             'company_id' => $company['id'],
             'type_id' => $type['id'],
+            'category_id' => $category['id'],
             'description' => $job['description'],
             'title' => $job['title'],
             'country' => $job['country'],
             'city' => $job['city']
-        ];
-
-        return parent::add($jobDatabase);
+        ]);
     }
 }
 

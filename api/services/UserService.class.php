@@ -28,8 +28,33 @@ class UserService extends BaseService{
     public function register($user){
         if(!isset($user['username'])){
             throw new \Exception("Username is required", 1);
-
         }
+
+
+        $u = parent::add([
+          'name' => $user['name'],
+          'surname' => $user['surname'],
+          'email' => $user['email'],
+          'password' => $user['password'],
+          'username' => $user['username'],
+          'token' => md5(random_bytes(16))
+        ]);
+
+          //send email with token
+
+          return $u;
+    }
+
+    public function confirm($token){
+        $user = $this->dao->getUserByToken($token);
+
+        if(!isset($user['id'])){
+          throw new \Exception("Invalid token");
+        }
+
+        $this->dao->update($user['id'], ['status' => "ACTIVE"]);
+
+        //now send email
     }
 }
 ?>

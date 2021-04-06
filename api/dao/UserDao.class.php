@@ -6,7 +6,7 @@ class UserDao extends BaseDao
     public function __construct(){
         parent::__construct("users");
     }
-    
+
     public function getUserByEmail($email)
     {
         return $this->queryUnique("SELECT * FROM users WHERE email = :email", ["email" => $email]);
@@ -39,5 +39,9 @@ class UserDao extends BaseDao
       return $this->query("SELECT * FROM users
                            WHERE username LIKE CONCAT('%', :username, '%')
                            LIMIT ${limit} OFFSET ${offset}", ["username" => $search]);
+    }
+
+    public function getUserByToken($token){
+      return $this->queryUnique("SELECT * FROM users WHERE token = :token", ["token" => $token]);
     }
   }

@@ -17,7 +17,7 @@ Flight::route('GET /users/@id', function($id){
 Flight::route('POST /users', function(){
     $request = Flight::request();
     $data = $request->data->getData();
-    $user = Flight::userService()->add($data);
+    $user = Flight::userService()->register($data);
     Flight::json($data);
 });
 
@@ -26,6 +26,11 @@ Flight::route('PUT /users/@id', function($id){
     $data = $request->data->getData();
     $user = Flight::userService()->update($id, $data);
     Flight::json($user);
+});
+
+Flight::route('GET /users/confirm/@token', function($token){
+    Flight::userService()->confirm($token);
+    Flight::json(["message" => "Your account is activated"]);
 });
 
  ?>
