@@ -1,4 +1,5 @@
 <?php
+<<<<<<< HEAD
 /**
  * @OA\Info(title="Webprogramming project", version="0.1")
  * @OA\OpenApi(
@@ -8,6 +9,9 @@
  *   )
  * )
  */
+=======
+
+>>>>>>> c6cfbcd9d0fbfe2434e64efe6d05af81e16d05fd
 
 /**
  * @OA\Get(path="/jobs",
