@@ -20,6 +20,13 @@ Flight::register('companyService', 'CompanyService');
 Flight::register('typeService', 'TypeService');
 Flight::register('categoryService', 'CategoryService');
 
+/* Swagger*/
+ Flight::route('GET /swagger', function(){
+     $openapi = @\OpenApi\scan(dirname(__FILE__)."/routes");
+     header('Content-Type: application/json');
+     echo $openapi->toJson();
+ });
+
 //include all routes
 require_once dirname(__FILE__)."/routes/UserRoutes.php";
 require_once dirname(__FILE__)."/routes/JobRoutes.php";
@@ -34,6 +41,8 @@ Flight::map('query', function($name, $default_value = null){
     $query_param = $query_param ? $query_param : $default_value;
     return $query_param;
 });
+
+
 
 Flight::start();
 
