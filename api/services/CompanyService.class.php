@@ -29,5 +29,37 @@ class CompanyService extends BaseService{
     public function getById($id){
         return parent::getById($id);
     }
+
+    public function register($company){
+        if(!isset($company['name'])){
+            throw new \Exception("Username is required", 1);
+        }
+        $c = parent::add([
+          'name' => $company['name'],
+          'email' => $company['email'],
+          'password' => $company['password'],
+          'phone' => $company['phone'],
+          'address' => $company['address'],
+          'country' => $company['country'],
+          'city' => $company['city'],
+          'token' => md5(random_bytes(16))
+        ]);
+
+          //send email with token
+
+          return $c;
+    }
+
+    public function confirm($token){
+        $company = $this->dao->getCompanyByToken($token);
+
+        if(!isset($company['id'])){
+          throw new \Exception("Invalid token");
+        }
+
+        $this->dao->update($user['id'], ['status' => "ACTIVE"]);
+
+        //now send email
+    }
 }
  ?>

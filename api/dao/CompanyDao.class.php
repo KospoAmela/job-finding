@@ -46,4 +46,8 @@ class CompanyDao extends BaseDao
         return $this->queryUnique("SELECT * FROM companies
                              WHERE name LIKE CONCAT('%', :name, '%')", ["name" => $companyName]);
     }
+
+    public function getCompanyByToken($token){
+      return $this->queryUnique("SELECT * FROM companies WHERE token = :token", ["token" => $token]);
+    }
 }

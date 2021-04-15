@@ -48,4 +48,10 @@ Flight::route('PUT /companies/@id', function($id){
     $company = Flight::companyService()->update($id, $data);
     Flight::json($data);
 });
+
+
+Flight::route('GET /companies/confirm/@token', function($token){
+    Flight::companyService()->confirm($token);
+    Flight::json(["message" => "Your company account is activated"]);
+});
  ?>
