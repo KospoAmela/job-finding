@@ -1,7 +1,5 @@
 <?php
-/**
- * @OA\Info(title="Webprogramming project", version="0.1")
- */
+
 
 /**
  * @OA\Get(path="/jobs",
@@ -17,8 +15,8 @@ Flight::route('GET /jobs', function(){
 
 /**
  * @OA\Get(path="/jobs/{id}",
- *     @OA\Parameter(@OA\Schema(type="integer"), in="path", allowReserved=true, name="id", default=1),
- *     @OA\Response(response="200", description="Get a job from database")
+ *     @OA\Parameter(@OA\Schema(type="integer"), in="path", allowReserved=true, name="id", example=1),
+ *     @OA\Response(response="200", description="Get a job from database corresponding to id")
  * )
  */
 Flight::route('GET /jobs/@id', function($id){
@@ -41,7 +39,7 @@ Flight::route('POST /jobs', function(){
 
 /**
  * @OA\Put(path="/jobs/{id}",
- *     @OA\Parameter(@OA\Schema(type="integer"), in="path", allowReserved=true, name="id", default=1),
+ *     @OA\Parameter(@OA\Schema(type="integer"), in="path", allowReserved=true, name="id", example=1),
  *     @OA\Response(response="200", description="Update a job in the database")
  * )
  */
