@@ -26,7 +26,12 @@ require_once dirname(__FILE__)."/routes/JobRoutes.php";
 require_once dirname(__FILE__)."/routes/TypeRoutes.php";
 require_once dirname(__FILE__)."/routes/CategoryRoutes.php";
 require_once dirname(__FILE__)."/routes/CompanyRoutes.php";
-require_once dirname(__FILE__)."/routes/doc.php";
+
+Flight::route('GET /swagger', function(){
+    $openapi = @\OpenApi\scan(dirname(__FILE__)."/routes");
+    header('Content-Type: application/json');
+    echo $openapi->toJson();
+});
 
 Flight::route('GET /', function(){
     Flight::redirect('docs');

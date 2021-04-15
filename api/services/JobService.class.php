@@ -53,7 +53,7 @@ class JobService extends BaseService{
         $category = $this->categoryDao->getByCategoryByName($job['category_name']);
         $type = $this->typeDao->getTypeByName($job['type_name']);
 
-
+        try{
         return parent::add([
             'posted_at' => date(Config::DATE_FORMAT),
             'deadline' => $job['deadline'],
@@ -65,6 +65,10 @@ class JobService extends BaseService{
             'country' => $job['country'],
             'city' => $job['city']
         ]);
+      }catch(\Exception $e){
+          $this->dao->rollBack();
+          echo $e->getMessage();
+      }
     }
 }
 

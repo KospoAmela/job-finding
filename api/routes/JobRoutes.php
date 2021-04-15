@@ -1,4 +1,12 @@
 <?php
+/**
+ * @OA\Info(title="Webprogramming project", version="0.1")
+ * @OA\OpenApi(
+ *   @OA\Server(
+ *       url="http://localhost/webprogramming/api/", description="Development environment"
+ *   )
+ * )
+ */
 
 /**
  * @OA\Get(path="/jobs",
