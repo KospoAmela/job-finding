@@ -32,7 +32,7 @@ Flight::route('GET /companies/@id', function($id){
 Flight::route('POST /companies', function(){
     $request = Flight::request();
     $data = $request->data->getData();
-    $company = Flight::companyService()->add($data);
+    $company = Flight::companyService()->register($data);
     Flight::json($data);
 });
 

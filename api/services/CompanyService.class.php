@@ -2,6 +2,7 @@
 
 require_once dirname(__FILE__)."/BaseService.class.php";
 require_once dirname(__FILE__)."/../dao/CompanyDao.class.php";
+require_once dirname(__FILE__)."/../mailer.class.php";
 
 class CompanyService extends BaseService{
 
@@ -34,6 +35,7 @@ class CompanyService extends BaseService{
         if(!isset($company['name'])){
             throw new \Exception("Username is required", 1);
         }
+        $token = md5(random_bytes(16));
         $c = parent::add([
           'name' => $company['name'],
           'email' => $company['email'],
@@ -42,12 +44,13 @@ class CompanyService extends BaseService{
           'address' => $company['address'],
           'country' => $company['country'],
           'city' => $company['city'],
-          'token' => md5(random_bytes(16))
+          'token' => $token
         ]);
 
-          //send email with token
+        $mail = new Mailer();
+        $mail->mailer($company['email'], $token, "Validation token");
 
-          return $c;
+        return $c;
     }
 
     public function confirm($token){
