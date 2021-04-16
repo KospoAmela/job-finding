@@ -2,7 +2,7 @@
 
 require_once dirname(__FILE__)."/BaseService.class.php";
 require_once dirname(__FILE__)."/../dao/UserDao.class.php";
-require_once dirname(__FILE__)."/../mailer.class.php";
+require_once dirname(__FILE__)."/../clients/mailer.class.php";
 
 class UserService extends BaseService{
 
