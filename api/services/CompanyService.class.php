@@ -39,7 +39,7 @@ class CompanyService extends BaseService{
         $c = parent::add([
           'name' => $company['name'],
           'email' => $company['email'],
-          'password' => $company['password'],
+          'password' => md5($company['password']),
           'phone' => $company['phone'],
           'address' => $company['address'],
           'country' => $company['country'],
@@ -70,7 +70,7 @@ class CompanyService extends BaseService{
             throw new \Exception("There's no account with that email", 400);
         }else if($company['status'] != "ACTIVE"){
             throw new \Exception("Your account hasn't been confirmed yet. Check you email", 400);
-        }else if($company['password'] != $data['password']){
+        }else if($company['password'] != md5($data['password'])){
             throw new \Exception("Wrong password", 400);
         }else{
             return $company;

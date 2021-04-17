@@ -41,7 +41,7 @@ class UserService extends BaseService{
           'name' => $user['name'],
           'surname' => $user['surname'],
           'email' => $user['email'],
-          'password' => $user['password'],
+          'password' => md5($user['password']),
           'username' => $user['username'],
           'token' => $token
         ]);
@@ -68,7 +68,7 @@ class UserService extends BaseService{
             throw new \Exception("There's no account with that username", 400);
         }else if($user['status'] != "ACTIVE"){
             throw new \Exception("Your account hasn't been confirmed yet. Check you email", 400);
-        }else if($user['password'] != $data['password']){
+        }else if($user['password'] != md5($data['password'])){
             throw new \Exception("Wrong password", 400);
         }else{
             return $user;
