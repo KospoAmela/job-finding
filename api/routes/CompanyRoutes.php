@@ -58,4 +58,16 @@ Flight::route('POST /companies/login', function(){
     $data = Flight::request()->data->getData();
     Flight::json(Flight::companyService()->login($data));
 });
+
+Flight::route('POST /companies/forgot', function(){
+    $data = Flight::request()->data->getData();
+    Flight::companyService()->forgot($data);
+    Flight::json(["message" => "Recovery link has been sent to your email."]);
+});
+
+Flight::route('POST /companies/reset', function(){
+    $data = Flight::request()->data->getData();
+    Flight::companyService()->reset($data);
+    Flight::json(["message" => "Your password has been changed"]);
+});
  ?>

@@ -1,5 +1,9 @@
 <?php
 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 require_once dirname(__FILE__)."/BaseService.class.php";
 require_once dirname(__FILE__)."/../dao/CompanyDao.class.php";
 require_once dirname(__FILE__)."/../clients/mailer.class.php";
@@ -75,6 +79,45 @@ class CompanyService extends BaseService{
         }else{
             return $company;
         }
+    }
+
+    public function forgot($company)
+    {
+        $companyDB = $this->dao->getCompanyByEmail($company['email']);
+        if(!isset($companyDB['id']))
+        {
+            throw new \Exception("There's no account with that email", 400);
+        }
+
+        $companyDB = $this->update($companyDB['id'], ['token' => md5(random_bytes(16))]);
+
+        $message = "Hi ".$companyDB['name'].", It seems like you've forgotten your password. If you haven't made this request, ignore this email. Here's your recovery token: ".$companyDB['token'];
+
+        $mail = new Mailer();
+        $mail->mailer($companyDB['email'], $message, "Reset password");
+
+    }
+
+
+/*public function reset($user)
+{
+    $userDB = $this->dao->getUserByToken($user['token']);
+    if(!isset($userDB['id']))
+    {
+        throw new \Exception("Invalid token", 400);
+    }
+
+    $this->update($userDB['id'], ['password' => md5($user['password']), 'token' => md5(random_bytes(16))]);
+}*/
+    public function reset($company)
+    {
+        $companyDB = $this->dao->getCompanyByToken($company['token']);
+        if(!isset($companyDB['id']))
+        {
+            throw new \Exception("Invalid token", 400);
+        }
+
+        $this->update($companyDB['id'], ['password' => md5($company['password']), 'token' => md5(random_bytes(16))]);
     }
 }
  ?>
