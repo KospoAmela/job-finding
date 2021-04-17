@@ -1,5 +1,9 @@
 <?php
 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 require_once dirname(__FILE__)."/BaseService.class.php";
 require_once dirname(__FILE__)."/../dao/UserDao.class.php";
 require_once dirname(__FILE__)."/../clients/mailer.class.php";
@@ -56,8 +60,20 @@ class UserService extends BaseService{
         }
 
         $this->dao->update($user['id'], ['status' => "ACTIVE"]);
+    }
 
-        //now send email
+    public function login($data){
+        $user = $this->dao->getUserByUsername($data['username']);
+        Flight::json($user);
+        if(!isset($user['id'])){
+            throw new \Exception("There's no account with that username", 400);
+        }else if($user['status'] != "ACTIVE"){
+            throw new \Exception("Your account hasn't been confirmed yet. Check you email", 400);
+        }else if($user['password'] != $data['password']){
+            throw new \Exception("Wrong password", 400);
+        }else{
+            return $user;
+        }
     }
 }
 ?>

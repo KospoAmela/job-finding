@@ -29,11 +29,11 @@ Flight::route('GET /companies/@id', function($id){
  *     @OA\Response(response="200", description="Add a company to database")
  * )
  */
-Flight::route('POST /companies', function(){
+Flight::route('POST /companies/register', function(){
     $request = Flight::request();
     $data = $request->data->getData();
-    $company = Flight::companyService()->register($data);
-    Flight::json($data);
+    Flight::companyService()->register($data);
+    Flight::json(["message" => "Confirmation email has been sent, please confirm your account"]);
 });
 
 /**
@@ -53,5 +53,11 @@ Flight::route('PUT /companies/@id', function($id){
 Flight::route('GET /companies/confirm/@token', function($token){
     Flight::companyService()->confirm($token);
     Flight::json(["message" => "Your company account is activated"]);
+});
+
+Flight::route('POST /companies/login', function(){
+    $request = Flight::request();
+    $data = $request->data->getData();
+    Flight::companyService()->login($data);
 });
  ?>

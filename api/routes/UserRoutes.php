@@ -1,5 +1,9 @@
 <<?php
 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 /**
  * @OA\Get(path="/users",
  *     @OA\Response(response="200", description="List users from database")
@@ -29,11 +33,11 @@ Flight::route('GET /users/@id', function($id){
  *     @OA\Response(response="200", description="Add a user to database")
  * )
  */
-Flight::route('POST /users', function(){
+Flight::route('POST /users/register', function(){
     $request = Flight::request();
     $data = $request->data->getData();
-    $user = Flight::userService()->register($data);
-    Flight::json($data);
+    Flight::userService()->register($data);
+    Flight::json(["message" => "Confirmation email has been sent, please confirm your account"]);
 });
 
 /**
@@ -60,4 +64,9 @@ Flight::route('GET /users/confirm/@token', function($token){
     Flight::json(["message" => "Your account is activated"]);
 });
 
+
+Flight::route('POST /users/login', function(){
+    $data = Flight::request()->data->getData();
+    Flight::userService()->login($data);
+});
  ?>
