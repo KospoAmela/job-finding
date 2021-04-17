@@ -68,7 +68,7 @@ class UserService extends BaseService
           throw new \Exception("Invalid token");
         }
 
-        $this->dao->update($user['id'], ['status' => "ACTIVE"]);
+        $this->dao->update($user['id'], ['status' => "ACTIVE", 'token' => null]);
     }
 
     public function login($data)

@@ -65,7 +65,7 @@ class CompanyService extends BaseService{
           throw new \Exception("Invalid token");
         }
 
-        $this->dao->update($company['id'], ['status' => "ACTIVE"]);
+        $this->dao->update($company['id'], ['status' => "ACTIVE", 'token' => null]);
     }
 
     public function login($data){
@@ -98,17 +98,6 @@ class CompanyService extends BaseService{
 
     }
 
-
-/*public function reset($user)
-{
-    $userDB = $this->dao->getUserByToken($user['token']);
-    if(!isset($userDB['id']))
-    {
-        throw new \Exception("Invalid token", 400);
-    }
-
-    $this->update($userDB['id'], ['password' => md5($user['password']), 'token' => md5(random_bytes(16))]);
-}*/
     public function reset($company)
     {
         $companyDB = $this->dao->getCompanyByToken($company['token']);
