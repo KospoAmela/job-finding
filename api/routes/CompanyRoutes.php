@@ -43,8 +43,7 @@ Flight::route('POST /companies/register', function(){
  * )
  */
 Flight::route('PUT /companies/@id', function($id){
-    $request = Flight::request();
-    $data = $request->data->getData();
+    $data = Flight::request()->data->getData();
     $company = Flight::companyService()->update($id, $data);
     Flight::json($data);
 });
@@ -56,8 +55,7 @@ Flight::route('GET /companies/confirm/@token', function($token){
 });
 
 Flight::route('POST /companies/login', function(){
-    $request = Flight::request();
-    $data = $request->data->getData();
-    Flight::companyService()->login($data);
+    $data = Flight::request()->data->getData();
+    Flight::json(Flight::companyService()->login($data));
 });
  ?>

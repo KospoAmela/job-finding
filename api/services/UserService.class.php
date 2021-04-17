@@ -64,7 +64,6 @@ class UserService extends BaseService{
 
     public function login($data){
         $user = $this->dao->getUserByUsername($data['username']);
-        Flight::json($user);
         if(!isset($user['id'])){
             throw new \Exception("There's no account with that username", 400);
         }else if($user['status'] != "ACTIVE"){

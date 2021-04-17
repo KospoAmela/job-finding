@@ -62,8 +62,19 @@ class CompanyService extends BaseService{
         }
 
         $this->dao->update($company['id'], ['status' => "ACTIVE"]);
+    }
 
-        //now send email
+    public function login($data){
+        $company = $this->dao->getCompanyByEmail($data['email']);
+        if(!isset($company['id'])){
+            throw new \Exception("There's no account with that email", 400);
+        }else if($company['status'] != "ACTIVE"){
+            throw new \Exception("Your account hasn't been confirmed yet. Check you email", 400);
+        }else if($company['password'] != $data['password']){
+            throw new \Exception("Wrong password", 400);
+        }else{
+            return $company;
+        }
     }
 }
  ?>

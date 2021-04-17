@@ -67,6 +67,6 @@ Flight::route('GET /users/confirm/@token', function($token){
 
 Flight::route('POST /users/login', function(){
     $data = Flight::request()->data->getData();
-    Flight::userService()->login($data);
+    Flight::json(Flight::userService()->login($data));
 });
  ?>
