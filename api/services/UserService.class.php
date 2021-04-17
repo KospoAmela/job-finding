@@ -8,29 +8,37 @@ require_once dirname(__FILE__)."/BaseService.class.php";
 require_once dirname(__FILE__)."/../dao/UserDao.class.php";
 require_once dirname(__FILE__)."/../clients/mailer.class.php";
 
-class UserService extends BaseService{
+class UserService extends BaseService
+{
 
-    public function __construct(){
+    public function __construct()
+    {
         $this->dao=new UserDao();
     }
 
-    public function getUsers($search, $offset, $limit){
-        if($search){
+    public function getUsers($search, $offset, $limit)
+    {
+        if($search)
+        {
             return $this->dao->searchUsers($search, $offset, $limit);
-        }else{
+        }else
+        {
             return $this->dao->getAllUsersPaginated($offset, $limit);
         }
     }
 
-    public function update($id, $user){
+    public function update($id, $user)
+    {
         return parent::update($id, $user);
     }
 
-    public function getById($id){
+    public function getById($id)
+    {
         return parent::getById($id);
     }
 
-    public function register($user){
+    public function register($user)
+    {
         if(!isset($user['username'])){
             throw new \Exception("Username is required", 1);
         }
@@ -52,7 +60,8 @@ class UserService extends BaseService{
         return $u;
     }
 
-    public function confirm($token){
+    public function confirm($token)
+    {
         $user = $this->dao->getUserByToken($token);
 
         if(!isset($user['id'])){
@@ -62,7 +71,8 @@ class UserService extends BaseService{
         $this->dao->update($user['id'], ['status' => "ACTIVE"]);
     }
 
-    public function login($data){
+    public function login($data)
+    {
         $user = $this->dao->getUserByUsername($data['username']);
         if(!isset($user['id'])){
             throw new \Exception("There's no account with that username", 400);
@@ -74,5 +84,32 @@ class UserService extends BaseService{
             return $user;
         }
     }
+
+    public function forgot($user)
+    {
+        $userDB = $this->dao->getUserByUsername($user['username']);
+        if(!isset($userDB['id']))
+        {
+            throw new \Exception("There's no account with that username", 400);
+        }
+
+        $userDB = $this->update($userDB['id'], ['token' => md5(random_bytes(16))]);
+
+        $message = "Hi ".$userDB['username'].", It seems like you've forgotten your password. If you haven't made this request, ignore this email. Here's your recovery token: ".$userDB['token'];
+
+        $mail = new Mailer();
+        $mail->mailer($userDB['email'], $message, "Reset password");
+
+  }
+  public function reset($user)
+  {
+      $userDB = $this->dao->getUserByToken($user['token']);
+      if(!isset($userDB['id']))
+      {
+          throw new \Exception("Invalid token", 400);
+      }
+
+      $this->update($userDB['id'], ['password' => md5($user['password']), 'token' => md5(random_bytes(16))]);
+  }
 }
 ?>
