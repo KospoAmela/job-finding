@@ -107,6 +107,12 @@ class CompanyService extends BaseService{
             throw new \Exception("Invalid token", 400);
         }
 
+        if((strtotime(date(Config::DATE_FORMAT)) - strtotime($companyDB['token_created_at'])) / 60 > 30)
+        {
+            throw new \Exception("Token expired", 400);
+
+        }
+
         $this->update($companyDB['id'], ['password' => md5($company['password']), 'token' => null]);
     }
 }
