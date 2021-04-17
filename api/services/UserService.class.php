@@ -41,9 +41,9 @@ class UserService extends BaseService{
           'username' => $user['username'],
           'token' => $token
         ]);
-
+        $message = "http://localhost/webprogramming/api/users/confirm/".$token;
         $mail = new Mailer();
-        $mail->mailer($user['email'], $token, "Validation token");
+        $mail->mailer($user['email'], $message, "Validation token");
 
         return $u;
     }

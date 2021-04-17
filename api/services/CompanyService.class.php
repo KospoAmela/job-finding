@@ -33,7 +33,7 @@ class CompanyService extends BaseService{
 
     public function register($company){
         if(!isset($company['name'])){
-            throw new \Exception("Username is required", 1);
+            throw new \Exception("Name is required", 1);
         }
         $token = md5(random_bytes(16));
         $c = parent::add([
@@ -47,8 +47,9 @@ class CompanyService extends BaseService{
           'token' => $token
         ]);
 
+        $message = "http://localhost/webprogramming/api/companies/confirm/".$token;
         $mail = new Mailer();
-        $mail->mailer($company['email'], $token, "Validation token");
+        $mail->mailer($company['email'], $message, "Validation token");
 
         return $c;
     }
@@ -60,7 +61,7 @@ class CompanyService extends BaseService{
           throw new \Exception("Invalid token");
         }
 
-        $this->dao->update($user['id'], ['status' => "ACTIVE"]);
+        $this->dao->update($company['id'], ['status' => "ACTIVE"]);
 
         //now send email
     }
