@@ -51,7 +51,8 @@ class UserService extends BaseService
           'email' => $user['email'],
           'password' => md5($user['password']),
           'username' => $user['username'],
-          'token' => $token
+          'token' => $token,
+          'token_created_at' => date(Config::DATE_FORMAT)
         ]);
         $message = "http://localhost/webprogramming/api/users/confirm/".$token;
         $mail = new Mailer();
@@ -68,7 +69,7 @@ class UserService extends BaseService
           throw new \Exception("Invalid token");
         }
 
-        $this->dao->update($user['id'], ['status' => "ACTIVE", 'token' => null]);
+        $this->dao->update($user['id'], ['status' => "ACTIVE", 'token' => null, 'token_created_at' => date(Config::DATE_FORMAT)]);
     }
 
     public function login($data)
@@ -93,7 +94,7 @@ class UserService extends BaseService
             throw new \Exception("There's no account with that username", 400);
         }
 
-        $userDB = $this->update($userDB['id'], ['token' => md5(random_bytes(16))]);
+        $userDB = $this->update($userDB['id'], ['token' => md5(random_bytes(16)), 'token_created_at' => date(Config::DATE_FORMAT)]);
 
         $message = "Hi ".$userDB['username'].", It seems like you've forgotten your password. If you haven't made this request, ignore this email. Here's your recovery token: ".$userDB['token'];
 
@@ -107,6 +108,12 @@ class UserService extends BaseService
       if(!isset($userDB['id']))
       {
           throw new \Exception("Invalid token", 400);
+      }
+
+      if((strtotime(date(Config::DATE_FORMAT)) - strtotime($userDB['token_created_at'])) / 60 > 30)
+      {
+          throw new \Exception("Token expired", 400);
+
       }
 
       $this->update($userDB['id'], ['password' => md5($user['password']), 'token' => null]);

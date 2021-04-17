@@ -48,7 +48,8 @@ class CompanyService extends BaseService{
           'address' => $company['address'],
           'country' => $company['country'],
           'city' => $company['city'],
-          'token' => $token
+          'token' => $token,
+          'token_created_at' => date(Config::DATE_FORMAT)
         ]);
 
         $message = "http://localhost/webprogramming/api/companies/confirm/".$token;
@@ -89,7 +90,7 @@ class CompanyService extends BaseService{
             throw new \Exception("There's no account with that email", 400);
         }
 
-        $companyDB = $this->update($companyDB['id'], ['token' => md5(random_bytes(16))]);
+        $companyDB = $this->update($companyDB['id'], ['token' => md5(random_bytes(16)), 'token_created_at' => date(Config::DATE_FORMAT)]);
 
         $message = "Hi ".$companyDB['name'].", It seems like you've forgotten your password. If you haven't made this request, ignore this email. Here's your recovery token: ".$companyDB['token'];
 
