@@ -109,7 +109,7 @@ class UserService extends BaseService
           throw new \Exception("Invalid token", 400);
       }
 
-      $this->update($userDB['id'], ['password' => md5($user['password']), 'token' => md5(random_bytes(16))]);
+      $this->update($userDB['id'], ['password' => md5($user['password']), 'token' => null]);
   }
 }
 ?>
