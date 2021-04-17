@@ -90,6 +90,11 @@ class CompanyService extends BaseService{
             throw new \Exception("There's no account with that email", 400);
         }
 
+        if((strtotime(date(Config::DATE_FORMAT)) - strtotime($companyDB['token_created_at'])) / 60 < 5)
+        {
+            throw new \Exception("Maybe you should write your password down somewhere safe. Try reseting in a few minutes.", 400);
+        }
+
         $companyDB = $this->update($companyDB['id'], ['token' => md5(random_bytes(16)), 'token_created_at' => date(Config::DATE_FORMAT)]);
 
         $message = "Hi ".$companyDB['name'].", It seems like you've forgotten your password. If you haven't made this request, ignore this email. Here's your recovery token: ".$companyDB['token'];

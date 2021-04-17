@@ -94,6 +94,10 @@ class UserService extends BaseService
             throw new \Exception("There's no account with that username", 400);
         }
 
+        if((strtotime(date(Config::DATE_FORMAT)) - strtotime($userDB['token_created_at'])) / 60 < 5)
+        {
+            throw new \Exception("Maybe you should write your password down somewhere safe. Try reseting in a few minutes.", 400);
+        }
         $userDB = $this->update($userDB['id'], ['token' => md5(random_bytes(16)), 'token_created_at' => date(Config::DATE_FORMAT)]);
 
         $message = "Hi ".$userDB['username'].", It seems like you've forgotten your password. If you haven't made this request, ignore this email. Here's your recovery token: ".$userDB['token'];
