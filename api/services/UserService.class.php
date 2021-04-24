@@ -8,6 +8,8 @@ require_once dirname(__FILE__)."/BaseService.class.php";
 require_once dirname(__FILE__)."/../dao/UserDao.class.php";
 require_once dirname(__FILE__)."/../clients/mailer.class.php";
 
+use \Firebase\JWT\JWT;
+
 class UserService extends BaseService
 {
 
@@ -82,7 +84,12 @@ class UserService extends BaseService
         }else if($user['password'] != md5($data['password'])){
             throw new \Exception("Wrong password", 400);
         }else{
-            return $user;
+            $payload = [
+              "id" => $user["id"],
+              "r" => $user["role"]
+            ];
+            $jwt = JWT::encode($payload, "JWT SECRET");
+            return ["token" => $jwt];
         }
     }
 
