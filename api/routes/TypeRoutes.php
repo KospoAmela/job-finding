@@ -17,8 +17,7 @@ Flight::route('GET /types', function(){
  * )
  */
 Flight::route('GET /types/@id', function($id){
-    $type = Flight::typeService()->getById($id);
-    Flight::json($type);
+    Flight::json(Flight::typeService()->getById($id));
 });
 
 /**
@@ -27,9 +26,7 @@ Flight::route('GET /types/@id', function($id){
  * )
  */
 Flight::route('POST /types', function(){
-    $request = Flight::request();
-    $data = $request->data->getData();
-    $type = Flight::typeService()->add($data);
-    print_r($data);
+    $type = Flight::typeService()->add(Flight::request()->data->getData());
+    Flight::json($type);
 });
  ?>

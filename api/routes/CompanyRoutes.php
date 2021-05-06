@@ -19,9 +19,7 @@ Flight::route('GET /companies', function(){
  * )
  */
 Flight::route('GET /companies/@id', function($id){
-    $companyService = new CompanyService();
-    $company = $companyService->getById($id);
-    Flight::json($company);
+    Flight::json(Flight::companyService()->getById($id));
 });
 
 /**
@@ -30,9 +28,7 @@ Flight::route('GET /companies/@id', function($id){
  * )
  */
 Flight::route('POST /companies/register', function(){
-    $request = Flight::request();
-    $data = $request->data->getData();
-    Flight::companyService()->register($data);
+    Flight::companyService()->register(Flight::request()->data->getData());
     Flight::json(["message" => "Confirmation email has been sent, please confirm your account"]);
 });
 
@@ -43,31 +39,47 @@ Flight::route('POST /companies/register', function(){
  * )
  */
 Flight::route('PUT /companies/@id', function($id){
-    $data = Flight::request()->data->getData();
-    $company = Flight::companyService()->update($id, $data);
-    Flight::json($data);
+    $company = Flight::companyService()->update($id, Flight::request()->data->getData());
+    Flight::json($company);
 });
 
-
+/**
+ * @OA\Get(path="/companies/confirm/{token}",
+ *     @OA\Parameter(@OA\Schema(type="integer"), in="path", allowReserved=true, name="token", example=1),
+ *     @OA\Response(response="200", description="Activate a company account")
+ * )
+ */
 Flight::route('GET /companies/confirm/@token', function($token){
     Flight::companyService()->confirm($token);
     Flight::json(["message" => "Your company account is activated"]);
 });
 
+/**
+ * @OA\Get(path="/companies/login",
+ *     @OA\Response(response="200", description="Validate login credentials")
+ * )
+ */
 Flight::route('POST /companies/login', function(){
-    $data = Flight::request()->data->getData();
-    Flight::json(Flight::companyService()->login($data));
+    Flight::json(Flight::companyService()->login(Flight::request()->data->getData()));
 });
 
+/**
+ * @OA\Get(path="/companies/forgot",
+ *     @OA\Response(response="200", description="Get recovery link for a forgotten password")
+ * )
+ */
 Flight::route('POST /companies/forgot', function(){
-    $data = Flight::request()->data->getData();
-    Flight::companyService()->forgot($data);
+    Flight::companyService()->forgot(Flight::request()->data->getData());
     Flight::json(["message" => "Recovery link has been sent to your email."]);
 });
 
+/**
+ * @OA\Get(path="/companies/reset",
+ *     @OA\Response(response="200", description="Reset password")
+ * )
+ */
 Flight::route('POST /companies/reset', function(){
-    $data = Flight::request()->data->getData();
-    Flight::companyService()->reset($data);
+    Flight::companyService()->reset(Flight::request()->data->getData());
     Flight::json(["message" => "Your password has been changed"]);
 });
  ?>

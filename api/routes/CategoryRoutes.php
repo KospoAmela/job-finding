@@ -17,8 +17,7 @@ Flight::route('GET /categories', function(){
  * )
  */
 Flight::route('GET /categories/@id', function($id){
-    $category = Flight::categoryService()->getById($id);
-    Flight::json($category);
+    Flight::json(Flight::categoryService()->getById($id));
 });
 
 /**
@@ -27,9 +26,7 @@ Flight::route('GET /categories/@id', function($id){
  * )
  */
 Flight::route('POST /categories', function(){
-    $request = Flight::request();
-    $data = $request->data->getData();
-    $category = Flight::categoryService()->add($data);
-    print_r($data);
+    $category = Flight::categoryService()->add(Flight::request()->data->getData());
+    Flight::json($category);
 });
  ?>
