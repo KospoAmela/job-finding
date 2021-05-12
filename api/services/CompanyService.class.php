@@ -77,9 +77,14 @@ class CompanyService extends BaseService{
             throw new \Exception("Your account hasn't been confirmed yet. Check you email", 400);
         }else if($company['password'] != md5($data['password'])){
             throw new \Exception("Wrong password", 400);
-        }else{
-            return $company;
-        }
+          }else{
+              $payload = [
+                "id" => $company["id"],
+                "r" => $company["role"]
+              ];
+              $jwt = JWT::encode($payload, "JWT SECRET");
+              return ["token" => $jwt];
+          }
     }
 
     public function forgot($company)

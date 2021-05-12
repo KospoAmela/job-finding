@@ -1,4 +1,8 @@
 <<?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
  use \Firebase\JWT\JWT;
 
 /**
@@ -7,6 +11,14 @@
  * )
  */
 Flight::route('GET /users', function(){
+    $headers = apache_request_headers();
+    //$headers['Authentication'] = "lkdjgjdlkgjdslkgj";
+    $token = $headers['Authorization'];
+    try {
+        $decoded = JWT::decode($token, "JWT SECRET", array('HS256'));
+    } catch (\Exception $e) {
+        print_r($e); die;
+    }
     $offset = Flight::query("offset", 0);
     $limit = Flight::query("limit", 30);
     $search = Flight::query("search");
@@ -20,10 +32,11 @@ Flight::route('GET /users', function(){
  * )
  */
 Flight::route('GET /users/@id', function($id){
-    $headers = getallheaders();
-    $token = @$headers['Authentication'];
+    $headers = apache_request_headers();
+    //$headers['Authentication'] = "lkdjgjdlkgjdslkgj";
+    $token = $headers['Authorization'];
     try {
-        $decoded = JWT::decode($token, "JWT SECRET", []);
+        $decoded = JWT::decode($token, "JWT SECRET", array('HS256'));
     } catch (\Exception $e) {
         print_r($e); die;
     }

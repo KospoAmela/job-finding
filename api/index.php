@@ -18,6 +18,13 @@ Flight::route('GET /', function(){
   Flight::redirect('/docs');
 });
 
+//include all services
+require_once dirname(__FILE__)."/services/UserService.class.php";
+require_once dirname(__FILE__)."/services/JobService.class.php";
+require_once dirname(__FILE__)."/services/TypeService.class.php";
+require_once dirname(__FILE__)."/services/CategoryService.class.php";
+require_once dirname(__FILE__)."/services/CompanyService.class.php";
+
 //register all services
 Flight::register('userService', 'UserService');
 Flight::register('jobService', 'JobService');
