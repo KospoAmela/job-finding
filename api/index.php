@@ -8,15 +8,6 @@ use \Firebase\JWT\JWT;
 
 require_once dirname(__FILE__)."/../vendor/autoload.php";
 
-Flight::route('GET /swagger', function(){
-  $openapi = @\OpenApi\scan(__DIR__."/routes");
-  header('Content-Type: application/json');
-  echo $openapi->toJson();
-});
-
-Flight::route('GET /', function(){
-  Flight::redirect('/docs');
-});
 
 //include all services
 require_once dirname(__FILE__)."/services/UserService.class.php";
@@ -33,11 +24,23 @@ Flight::register('typeService', 'TypeService');
 Flight::register('categoryService', 'CategoryService');
 
 //include all routes
+require_once dirname(__FILE__)."/routes/middleware.php";
 require_once dirname(__FILE__)."/routes/UserRoutes.php";
 require_once dirname(__FILE__)."/routes/JobRoutes.php";
 require_once dirname(__FILE__)."/routes/TypeRoutes.php";
 require_once dirname(__FILE__)."/routes/CategoryRoutes.php";
 require_once dirname(__FILE__)."/routes/CompanyRoutes.php";
+
+
+Flight::route('GET /swagger', function(){
+  $openapi = @\OpenApi\scan(__DIR__."/routes");
+  header('Content-Type: application/json');
+  echo $openapi->toJson();
+});
+
+Flight::route('GET /', function(){
+  Flight::redirect('/docs');
+});
 
 //utility function for reading queries from URL
 Flight::map('query', function($name, $default_value = null){
