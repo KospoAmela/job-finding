@@ -40,20 +40,8 @@ Flight::route('GET /users', function(){
  * )
  */
 Flight::route('GET /users/@id', function($id){
-    $headers = apache_request_headers();
-    $token = $headers['Authorization'];
-    try {
-        $decoded = (array)JWT::decode($token, "JWT SECRET", array('HS256'));
-        if($decoded['r'] == "ADMIN" or $decoded['id'] == $id){
-            Flight::json(Flight::userService()->getById($id));
-        }else{
-            Flight::json(["message" => "Unautorized access."], 401);
-        }
-    } catch (\Exception $e) {
-        Flight::json(["message" => $e->getMessage()], 401);
-    }
-
-
+    if(Flight::get('user')['id'] != $id) throw new \Exception("Unauthorized", 401);
+    Flight::json(Flight::userService()->getById($id));
 });
 
 /**
@@ -73,6 +61,7 @@ Flight::route('POST /users/register', function(){
  * )
  */
 Flight::route('PUT /users/@id', function($id){
+    if(Flight::get('user')['id'] != $id) throw new \Exception("Unauthorized", 401);
     $user = Flight::userService()->update($id, Flight::request()->data->getData());
     Flight::json($user);
 });
