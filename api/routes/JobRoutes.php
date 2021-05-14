@@ -4,9 +4,9 @@
 /**
  * @OA\Info(title="Introduction to Web Programming Project", version="0.1")
  * @OA\OpenApi(
- *    @OA\Server(url="http://localhost/webprogramming/", description="Development Environment" )
- * ),
- * @OA\SecurityScheme(securityScheme="ApiKeyAuth", type="apiKey", in="header", name="Authentication" )
+ *    @OA\Server(url="http://localhost/webprogramming/", description="Development Environment" ),
+ *    @OA\SecurityScheme(securityScheme="ApiKeyAuth", type="apiKey", in="header", name="Authentication" )
+ *)
  */
 
 

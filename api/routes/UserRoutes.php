@@ -6,7 +6,8 @@ error_reporting(E_ALL);
  use \Firebase\JWT\JWT;
 
 /**
- * @OA\Get(path="/users",
+ * @OA\Get(path="/users", security={{"ApiKeyAuth":{}}},
+ *     @OA\Parameter(type="string", in="header", allowReserved=true, name="Authorization", example="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjI4IiwiciI6IlVTRVIifQ.eaWexDbQyBq3P_lz5KNamnA-6roViLKAPjcuEnEBZrw"),
  *     @OA\Response(response="200", description="List users from database")
  * )
  */
@@ -15,33 +16,44 @@ Flight::route('GET /users', function(){
     //$headers['Authentication'] = "lkdjgjdlkgjdslkgj";
     $token = $headers['Authorization'];
     try {
-        $decoded = JWT::decode($token, "JWT SECRET", array('HS256'));
+        $decoded = (array)JWT::decode($token, "JWT SECRET", array('HS256'));
+        if($decoded['r'] == "ADMIN"){
+            $offset = Flight::query("offset", 0);
+            $limit = Flight::query("limit", 30);
+            $search = Flight::query("search");
+            Flight::json(Flight::userService()->getUsers($search, $offset, $limit));
+        }else{
+            Flight::json(["message" => "Unautorized access."], 401);
+        }
     } catch (\Exception $e) {
-        print_r($e); die;
+        Flight::json(["message" => $e->getMessage()], 401);
+        die;
     }
-    $offset = Flight::query("offset", 0);
-    $limit = Flight::query("limit", 30);
-    $search = Flight::query("search");
-    Flight::json(Flight::userService()->getUsers($search, $offset, $limit));
+
 });
 
 /**
- * @OA\Get(path="/users/{id}", tags="user", security={{"api_key":{}}},
+ * @OA\Get(path="/users/{id}", tags="user",  security={{"ApiKeyAuth":{}}},
  *     @OA\Parameter(type="integer", in="path", allowReserved=true, name="id", example=1),
+ *     @OA\Parameter(type="string", in="header", allowReserved=true, name="Authorization", example="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjI4IiwiciI6IlVTRVIifQ.eaWexDbQyBq3P_lz5KNamnA-6roViLKAPjcuEnEBZrw"),
  *     @OA\Response(response="200", description="Get a user from database corresponding to id")
  * )
  */
 Flight::route('GET /users/@id', function($id){
     $headers = apache_request_headers();
-    //$headers['Authentication'] = "lkdjgjdlkgjdslkgj";
     $token = $headers['Authorization'];
     try {
-        $decoded = JWT::decode($token, "JWT SECRET", array('HS256'));
+        $decoded = (array)JWT::decode($token, "JWT SECRET", array('HS256'));
+        if($decoded['r'] == "ADMIN" or $decoded['id'] == $id){
+            Flight::json(Flight::userService()->getById($id));
+        }else{
+            Flight::json(["message" => "Unautorized access."], 401);
+        }
     } catch (\Exception $e) {
-        print_r($e); die;
+        Flight::json(["message" => $e->getMessage()], 401);
     }
 
-    Flight::json(Flight::userService()->getById($id));
+
 });
 
 /**
