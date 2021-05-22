@@ -11,13 +11,13 @@ error_reporting(E_ALL);
  *     @OA\Response(response="200", description="List users from database")
  * )
  */
-Flight::route('GET /users', function(){
+Flight::route('GET /admin/users', function(){
     $headers = apache_request_headers();
     //$headers['Authentication'] = "lkdjgjdlkgjdslkgj";
     $token = $headers['Authorization'];
     try {
         $decoded = (array)JWT::decode($token, "JWT SECRET", array('HS256'));
-        if($decoded['r'] == "ADMIN"){
+        if(Flight::get('user')['r'] == "ADMIN"){
             $offset = Flight::query("offset", 0);
             $limit = Flight::query("limit", 30);
             $search = Flight::query("search");
@@ -39,9 +39,8 @@ Flight::route('GET /users', function(){
  *     @OA\Response(response="200", description="Get a user from database corresponding to id")
  * )
  */
-Flight::route('GET /users/@id', function($id){
-    if(Flight::get('user')['id'] != $id) throw new \Exception("Unauthorized", 401);
-    Flight::json(Flight::userService()->getById($id));
+Flight::route('GET /user/users', function(){
+    Flight::json(Flight::userService()->getById(Flight::get('user')['id']));
 });
 
 /**
@@ -60,9 +59,8 @@ Flight::route('POST /users/register', function(){
  *     @OA\Response(response="200", description="Update a user in the database corresponding to id")
  * )
  */
-Flight::route('PUT /users/@id', function($id){
-    if(Flight::get('user')['id'] != $id) throw new \Exception("Unauthorized", 401);
-    $user = Flight::userService()->update($id, Flight::request()->data->getData());
+Flight::route('PUT /user/users/update', function(){
+    $user = Flight::userService()->update(Flight::get('user')['id'], Flight::request()->data->getData());
     Flight::json($user);
 });
 
