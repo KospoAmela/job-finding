@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Webprogramming project API</title>
+    <title>Autoresponder API</title>
     <link rel="stylesheet" type="text/css" href="swagger-ui.css">
     <link rel="icon" type="image/png" href="favicon-32x32.png" sizes="32x32" />
     <style>
@@ -28,8 +28,8 @@
 
 <body>
     <div id="swagger-ui"></div>
-    <script src="swagger-ui-bundle.js"></script>
-    <script src="swagger-ui-standalone-preset.js"></script>
+    <script src="swagger-ui-bundle.js"> </script>
+    <script src="swagger-ui-standalone-preset.js"> </script>
     <script>
         window.onload = function () {
             const ui = SwaggerUIBundle({
@@ -49,4 +49,5 @@
         }
     </script>
 </body>
+
 </html>
