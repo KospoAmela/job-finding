@@ -23,7 +23,7 @@ Flight::route('GET /admin/users', function(){
             $search = Flight::query("search");
             Flight::json(Flight::userService()->getUsers($search, $offset, $limit));
         }else{
-            Flight::json(["message" => "Unautorized access."], 401);
+            Flight::json(["message" => "Unauthorized access."], 401);
         }
     } catch (\Exception $e) {
         Flight::json(["message" => $e->getMessage()], 401);

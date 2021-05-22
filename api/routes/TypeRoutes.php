@@ -26,6 +26,9 @@ Flight::route('GET /types/@id', function($id){
  * )
  */
 Flight::route('POST /admin/types', function(){
+    if(Flight::get('user')['r'] == "ADMIN"){
+        throw new \Exception("Unauthorized", 403);
+    }
     $type = Flight::typeService()->add(Flight::request()->data->getData());
     Flight::json($type);
 });

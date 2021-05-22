@@ -27,7 +27,7 @@ Flight::route('GET /categories/@id', function($id){
  */
 Flight::route('POST /admin/categories', function(){
     if(Flight::get('user')['r'] == "ADMIN"){
-        throw new \Exception("Unautorized", 403);
+        throw new \Exception("Unauthorized", 403);
     }
     $category = Flight::categoryService()->add(Flight::request()->data->getData());
     Flight::json($category);

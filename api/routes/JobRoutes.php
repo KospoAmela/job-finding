@@ -58,7 +58,7 @@ Flight::route('POST /user/jobs', function(){
  */
 Flight::route('PUT /user/jobs/@id', function($id){
     if(Flight::get('user')['id'] != Flight::jobService()->getById($id)['company_id']){
-        throw new \Exception("Unautorized", 403);
+        throw new \Exception("Unauthorized", 403);
     }
     $job = Flight::jobService()->update($id, Flight::request()->data->getData());
     Flight::json($job);
