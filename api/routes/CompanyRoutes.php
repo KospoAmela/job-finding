@@ -5,7 +5,7 @@
  *     @OA\Response(response="200", description="List companies from database")
  * )
  */
-Flight::route('GET /companies', function(){
+Flight::route('GET /admin/companies', function(){
     $offset = Flight::query("offset", 0);
     $limit = Flight::query("limit", 30);
     $search = Flight::query("search");
@@ -18,8 +18,8 @@ Flight::route('GET /companies', function(){
  *     @OA\Response(response="200", description="Get a company from database corresponding to id")
  * )
  */
-Flight::route('GET /companies/@id', function($id){
-    Flight::json(Flight::companyService()->getById($id));
+Flight::route('GET /user/companies', function(){
+    Flight::json(Flight::companyService()->getById(Flight::get('user')['id']));
 });
 
 /**
@@ -38,8 +38,8 @@ Flight::route('POST /companies/register', function(){
  *     @OA\Response(response="200", description="Update a company in the database")
  * )
  */
-Flight::route('PUT /companies/@id', function($id){
-    $company = Flight::companyService()->update($id, Flight::request()->data->getData());
+Flight::route('PUT /user/companies/', function(){
+    $company = Flight::companyService()->update(Flight::get('user')['id'], Flight::request()->data->getData());
     Flight::json($company);
 });
 
