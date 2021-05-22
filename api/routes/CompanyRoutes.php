@@ -6,6 +6,9 @@
  * )
  */
 Flight::route('GET /admin/companies', function(){
+    if(Flight::get('user')['r'] == "ADMIN"){
+        throw new \Exception("Unautorized", 403);
+    }
     $offset = Flight::query("offset", 0);
     $limit = Flight::query("limit", 30);
     $search = Flight::query("search");

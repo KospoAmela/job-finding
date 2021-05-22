@@ -25,7 +25,7 @@ Flight::route('GET /types/@id', function($id){
  *     @OA\Response(response="200", description="Add a type to database")
  * )
  */
-Flight::route('POST /types', function(){
+Flight::route('POST /admin/types', function(){
     $type = Flight::typeService()->add(Flight::request()->data->getData());
     Flight::json($type);
 });

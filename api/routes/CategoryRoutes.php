@@ -25,7 +25,10 @@ Flight::route('GET /categories/@id', function($id){
  *     @OA\Response(response="200", description="Add a category to database")
  * )
  */
-Flight::route('POST /categories', function(){
+Flight::route('POST /admin/categories', function(){
+    if(Flight::get('user')['r'] == "ADMIN"){
+        throw new \Exception("Unautorized", 403);
+    }
     $category = Flight::categoryService()->add(Flight::request()->data->getData());
     Flight::json($category);
 });

@@ -42,7 +42,10 @@ Flight::route('GET /jobs/@id', function($id){
  *     @OA\Response(response="200", description="Add a job to database")
  * )
  */
-Flight::route('POST /jobs', function(){
+Flight::route('POST /user/jobs', function(){
+    if(Flight::get('user')['r'] != "COMPANY"){
+        throw new \Exception("Must be a company to post jobs", 403);
+    }
     $job = Flight::jobService()->addJob(Flight::request()->data->getData());
     Flight::json($job);
 });
@@ -53,7 +56,10 @@ Flight::route('POST /jobs', function(){
  *     @OA\Response(response="200", description="Update a job in the database")
  * )
  */
-Flight::route('PUT /jobs/@id', function($id){
+Flight::route('PUT /user/jobs/@id', function($id){
+    if(Flight::get('user')['id'] != Flight::jobService()->getById($id)['company_id']){
+        throw new \Exception("Unautorized", 403);
+    }
     $job = Flight::jobService()->update($id, Flight::request()->data->getData());
     Flight::json($job);
 });
