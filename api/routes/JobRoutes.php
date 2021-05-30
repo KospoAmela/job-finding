@@ -1,5 +1,9 @@
 <?php
 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 /* Swagger documentation */
 /**
  * @OA\Info(title="Introduction to Web Programming Project", version="0.1")
@@ -46,7 +50,7 @@ Flight::route('POST /user/jobs', function(){
     if(Flight::get('user')['r'] != "COMPANY"){
         throw new \Exception("Must be a company to post jobs", 403);
     }
-    $job = Flight::jobService()->addJob(Flight::request()->data->getData());
+    $job = Flight::jobService()->addJob(Flight::get('user'), Flight::request()->data->getData());
     Flight::json($job);
 });
 

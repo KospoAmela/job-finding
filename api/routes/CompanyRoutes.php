@@ -1,4 +1,5 @@
 <?php
+use \Firebase\JWT\JWT;
 
 /**
  * @OA\Get(path="/companies",

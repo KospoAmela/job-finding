@@ -1,4 +1,5 @@
 <?php
+use \Firebase\JWT\JWT;
 
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
@@ -97,7 +98,7 @@ class CompanyService extends BaseService{
 
         if((strtotime(date(Config::DATE_FORMAT)) - strtotime($companyDB['token_created_at'])) / 60 < 5)
         {
-            throw new \Exception("Maybe you should write your password down somewhere safe. Try reseting in a few minutes.", 400);
+            throw new \Exception("Try reseting in a few minutes.", 400);
         }
 
         $companyDB = $this->update($companyDB['id'], ['token' => md5(random_bytes(16)), 'token_created_at' => date(Config::DATE_FORMAT)]);

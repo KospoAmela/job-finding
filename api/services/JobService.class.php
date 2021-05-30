@@ -34,7 +34,7 @@ class JobService extends BaseService{
         return parent::getById($id);
     }
 
-    public function addJob($job){
+    public function addJob($company, $job){
       //validate the input
         if(!isset($job['title'])){
             throw new \Exception("Title is required", 1);
@@ -49,7 +49,6 @@ class JobService extends BaseService{
             throw new \Exception("Category name is required", 1);
         }
         //get IDs by name
-        $company = $this->companyDao->getCompanyByName($job['company_name']);
         $category = $this->categoryDao->getByCategoryByName($job['category_name']);
         $type = $this->typeDao->getTypeByName($job['type_name']);
 
