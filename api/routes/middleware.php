@@ -35,4 +35,21 @@ Flight::route('/admin/*', function(){
     die;
   }
 });
+
+/* middleware for company users*/
+Flight::route('/company/*', function(){
+  try {
+    $headers = apache_request_headers();
+    $token = $headers['Authorization'];
+    $user = (array)JWT::decode($token, Config::JWT_SECRET, ["HS256"]);
+    if ($user["r"] != "COMPANY"){
+      throw new Exception("Regular user", 403);
+    }
+    Flight::set('user', $user);
+    return TRUE;
+  } catch (\Exception $e) {
+    Flight::json(["message" => $e->getMessage()], 401);
+    die;
+  }
+});
 ?>

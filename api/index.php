@@ -15,6 +15,7 @@ require_once dirname(__FILE__)."/services/JobService.class.php";
 require_once dirname(__FILE__)."/services/TypeService.class.php";
 require_once dirname(__FILE__)."/services/CategoryService.class.php";
 require_once dirname(__FILE__)."/services/CompanyService.class.php";
+require_once dirname(__FILE__)."/services/JobApplicationService.class.php";
 
 //register all services
 Flight::register('userService', 'UserService');
@@ -22,6 +23,7 @@ Flight::register('jobService', 'JobService');
 Flight::register('companyService', 'CompanyService');
 Flight::register('typeService', 'TypeService');
 Flight::register('categoryService', 'CategoryService');
+Flight::register('jobApplicationService', 'JobApplicationService');
 
 //include all routes
 require_once dirname(__FILE__)."/routes/middleware.php";
@@ -30,6 +32,7 @@ require_once dirname(__FILE__)."/routes/JobRoutes.php";
 require_once dirname(__FILE__)."/routes/TypeRoutes.php";
 require_once dirname(__FILE__)."/routes/CategoryRoutes.php";
 require_once dirname(__FILE__)."/routes/CompanyRoutes.php";
+require_once dirname(__FILE__)."/routes/ApplicationRoutes.php";
 
 
 Flight::route('GET /swagger', function(){
