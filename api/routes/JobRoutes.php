@@ -4,7 +4,7 @@
 /**
  * @OA\Info(title="Introduction to Web Programming Project", version="0.1")
  * @OA\OpenApi(
- *    @OA\Server(url="http://localhost/webprogramming/", description="Development Environment" ),
+ *    @OA\Server(url="http://localhost/webprogramming/api/", description="Development Environment" ),
  *    @OA\SecurityScheme(securityScheme="ApiKeyAuth", type="apiKey", in="header", name="Authentication" )
  *)
  */
@@ -63,3 +63,4 @@ Flight::route('PUT /user/jobs/@id', function($id){
     $job = Flight::jobService()->update($id, Flight::request()->data->getData());
     Flight::json($job);
 });
+?>

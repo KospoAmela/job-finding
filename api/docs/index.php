@@ -1,9 +1,13 @@
+<?php
+/* Project configuration */
+require_once __DIR__ . '/../configuration.php';
+?>
 <!-- HTML for static distribution bundle build -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Autoresponder API</title>
+    <title>Webprogramming project API</title>
     <link rel="stylesheet" type="text/css" href="swagger-ui.css">
     <link rel="icon" type="image/png" href="favicon-32x32.png" sizes="32x32" />
     <style>
