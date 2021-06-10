@@ -53,4 +53,13 @@ Flight::map('query', function($name, $default_value = null){
     return $query_param;
 });
 
+//utility function for generating jwt token
+Flight::map('jwt', function($user){
+    $jwt = JWT::encode(["exp" => (time() + Config::JWT_TOKEN_TIME), [
+      "id" => $user["id"],
+      "r" => $user["role"]
+    ], "JWT SECRET"]);
+    return ["token" => $jwt];
+});
+
 Flight::start();

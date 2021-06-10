@@ -8,8 +8,6 @@ require_once dirname(__FILE__)."/BaseService.class.php";
 require_once dirname(__FILE__)."/../dao/UserDao.class.php";
 require_once dirname(__FILE__)."/../clients/mailer.class.php";
 
-use \Firebase\JWT\JWT;
-
 class UserService extends BaseService
 {
 
@@ -72,6 +70,7 @@ class UserService extends BaseService
         }
 
         $this->dao->update($user['id'], ['status' => "ACTIVE", 'token' => null, 'token_created_at' => date(Config::DATE_FORMAT)]);
+        return $user;
     }
 
     public function login($data)
@@ -84,12 +83,7 @@ class UserService extends BaseService
         }else if($user['password'] != md5($data['password'])){
             throw new \Exception("Wrong password", 400);
         }else{
-            $payload = [
-              "id" => $user["id"],
-              "r" => $user["role"]
-            ];
-            $jwt = JWT::encode($payload, "JWT SECRET");
-            return ["token" => $jwt];
+            return $user;
         }
     }
 
@@ -113,8 +107,8 @@ class UserService extends BaseService
         $mail->mailer($userDB['email'], $message, "Reset password");
 
   }
-  public function reset($user)
-  {
+    public function reset($user)
+    {
       $userDB = $this->dao->getUserByToken($user['token']);
       if(!isset($userDB['id']))
       {
@@ -128,6 +122,7 @@ class UserService extends BaseService
       }
 
       $this->update($userDB['id'], ['password' => md5($user['password']), 'token' => null]);
+      return $userDB;
   }
 }
 ?>

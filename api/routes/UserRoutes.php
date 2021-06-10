@@ -3,8 +3,6 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
- use \Firebase\JWT\JWT;
-
 /**
  * @OA\Get(path="/users", security={{"ApiKeyAuth":{}}},
  *     @OA\Parameter(type="string", in="header", allowReserved=true, name="Authorization", example="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjI4IiwiciI6IlVTRVIifQ.eaWexDbQyBq3P_lz5KNamnA-6roViLKAPjcuEnEBZrw"),
@@ -71,8 +69,7 @@ Flight::route('PUT /user/users/update', function(){
  * )
  */
 Flight::route('GET /users/confirm/@token', function($token){
-    Flight::userService()->confirm($token);
-    Flight::json(["message" => "Your account is activated"]);
+    Flight::json(Flight::jwt(Flight::userService()->confirm($token)));
 });
 
 /**
@@ -81,7 +78,7 @@ Flight::route('GET /users/confirm/@token', function($token){
  * )
  */
 Flight::route('POST /users/login', function(){
-    Flight::json(Flight::userService()->login(Flight::request()->data->getData()));
+    Flight::json(Flight::jwt(Flight::userService()->login(Flight::request()->data->getData())));
 });
 
 /**
@@ -100,6 +97,5 @@ Flight::route('POST /users/forgot', function(){
  * )
  */
 Flight::route('POST /users/reset', function(){
-    Flight::userService()->reset(Flight::request()->data->getData());
-    Flight::json(["message" => "Your password has been changed"]);
+    Flight::json(Flight::jwt(Flight::userService()->reset(Flight::request()->data->getData())));
 });

@@ -68,6 +68,7 @@ class CompanyService extends BaseService{
         }
 
         $this->dao->update($company['id'], ['status' => "ACTIVE", 'token' => null]);
+        return $company;
     }
 
     public function login($data){
@@ -79,12 +80,7 @@ class CompanyService extends BaseService{
         }else if($company['password'] != md5($data['password'])){
             throw new \Exception("Wrong password", 400);
           }else{
-              $payload = [
-                "id" => $company["id"],
-                "r" => $company["role"]
-              ];
-              $jwt = JWT::encode($payload, "JWT SECRET");
-              return ["token" => $jwt];
+              return $company;
           }
     }
 
@@ -125,6 +121,7 @@ class CompanyService extends BaseService{
         }
 
         $this->update($companyDB['id'], ['password' => md5($company['password']), 'token' => null]);
+        $return $companyDB;
     }
 }
  ?>

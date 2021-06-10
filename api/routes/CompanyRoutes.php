@@ -1,5 +1,4 @@
 <?php
-use \Firebase\JWT\JWT;
 
 /**
  * @OA\Get(path="/companies",
@@ -54,8 +53,7 @@ Flight::route('PUT /user/companies/', function(){
  * )
  */
 Flight::route('GET /companies/confirm/@token', function($token){
-    Flight::companyService()->confirm($token);
-    Flight::json(["message" => "Your company account is activated"]);
+    Flight::json(Flight::jwt(Flight::companyService()->confirm($token)));
 });
 
 /**
@@ -64,7 +62,7 @@ Flight::route('GET /companies/confirm/@token', function($token){
  * )
  */
 Flight::route('POST /companies/login', function(){
-    Flight::json(Flight::companyService()->login(Flight::request()->data->getData()));
+    Flight::json(Flight::jwt(Flight::companyService()->login(Flight::request()->data->getData())));
 });
 
 /**
@@ -83,7 +81,6 @@ Flight::route('POST /companies/forgot', function(){
  * )
  */
 Flight::route('POST /companies/reset', function(){
-    Flight::companyService()->reset(Flight::request()->data->getData());
-    Flight::json(["message" => "Your password has been changed"]);
+    Flight::json(Flight::jwt(Flight::companyService()->reset(Flight::request()->data->getData())));
 });
  ?>
