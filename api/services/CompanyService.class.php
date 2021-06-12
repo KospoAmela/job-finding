@@ -121,7 +121,7 @@ class CompanyService extends BaseService{
         }
 
         $this->update($companyDB['id'], ['password' => md5($company['password']), 'token' => null]);
-        $return $companyDB;
+        return $companyDB;
     }
 }
  ?>

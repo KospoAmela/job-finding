@@ -73,26 +73,25 @@ class UserService extends BaseService
         return $user;
     }
 
-    public function login($data)
+    public function login($user)
     {
-        $user = $this->dao->getUserByUsername($data['username']);
-        if(!isset($user['id'])){
-            throw new \Exception("There's no account with that username", 400);
-        }else if($user['status'] != "ACTIVE"){
-            throw new \Exception("Your account hasn't been confirmed yet. Check you email", 400);
-        }else if($user['password'] != md5($data['password'])){
-            throw new \Exception("Wrong password", 400);
-        }else{
-            return $user;
-        }
+        $db_user = $this->dao->getUserByEmail($user['email']);
+
+        if (!isset($db_user['id'])) throw new Exception("User doesn't exist", 400);
+
+        if ($db_user['status'] != 'ACTIVE') throw new Exception("Account not active", 400);
+
+        if ($db_user['password'] != md5($user['password'])) throw new Exception("Invalid password", 400);
+
+        return $db_user;
     }
 
     public function forgot($user)
     {
-        $userDB = $this->dao->getUserByUsername($user['username']);
+        $userDB = $this->dao->getUserByEmail($data['email']);
         if(!isset($userDB['id']))
         {
-            throw new \Exception("There's no account with that username", 400);
+            throw new \Exception("There's no account with that email", 400);
         }
 
         if((strtotime(date(Config::DATE_FORMAT)) - strtotime($userDB['token_created_at'])) / 60 < 5)

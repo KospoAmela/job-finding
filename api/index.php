@@ -32,7 +32,7 @@ require_once dirname(__FILE__)."/routes/JobRoutes.php";
 require_once dirname(__FILE__)."/routes/TypeRoutes.php";
 require_once dirname(__FILE__)."/routes/CategoryRoutes.php";
 require_once dirname(__FILE__)."/routes/CompanyRoutes.php";
-require_once dirname(__FILE__)."/routes/ApplicationRoutes.php";
+require_once dirname(__FILE__)."/routes/ApplicationRoutes.class.php";
 
 
 Flight::route('GET /swagger', function(){
@@ -55,11 +55,14 @@ Flight::map('query', function($name, $default_value = null){
 
 //utility function for generating jwt token
 Flight::map('jwt', function($user){
-    $jwt = JWT::encode(["exp" => (time() + Config::JWT_TOKEN_TIME), [
-      "id" => $user["id"],
-      "r" => $user["role"]
-    ], "JWT SECRET"]);
-    return ["token" => $jwt];
+  $jwt = JWT::encode(["exp" => (time() + Config::JWT_TOKEN_TIME),
+  "id" => $user["id"], "r" => $user["role"]], Config::JWT_SECRET);
+  return ["token" => $jwt];
 });
 
+/* error handling for our API 
+Flight::map('error', function(Exception $ex){
+  Flight::json(["message" => $ex->getMessage()], $ex->getCode() ? $ex->getCode() : 500);
+});
+*/
 Flight::start();
