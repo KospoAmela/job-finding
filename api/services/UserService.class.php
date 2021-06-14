@@ -43,20 +43,24 @@ class UserService extends BaseService
             throw new \Exception("Username is required", 1);
         }
 
-        $token = md5(random_bytes(16));
+        if($this->dao->getUserByEmail($user['email'])){
+            throw new \Exception("There's already a user with that email", 1);
+        }
 
-        $u = parent::add([
-          'name' => $user['name'],
-          'surname' => $user['surname'],
-          'email' => $user['email'],
-          'password' => md5($user['password']),
-          'username' => $user['username'],
-          'token' => $token,
-          'token_created_at' => date(Config::DATE_FORMAT)
-        ]);
+        $token = md5(random_bytes(16));
+          $u = parent::add([
+            'name' => $user['name'],
+            'surname' => $user['surname'],
+            'email' => $user['email'],
+            'password' => md5($user['password']),
+            'username' => $user['username'],
+            'token' => $token,
+            'token_created_at' => date(Config::DATE_FORMAT)
+          ]);
         $message = "http://localhost/webprogramming/api/users/confirm/".$token;
         $mail = new Mailer();
-        $mail->mailer($user['email'], $message, "Validation token");
+        $mail->mailer($u['email'],
+        $message, "Validation token");
 
         return $u;
     }

@@ -28,10 +28,10 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
         <![endif]-->
     </head>
-    <body>
+    <body style="display:none">
 
         <div class="container">
-            <div class="row">
+            <div  id="login-form-container" class="row">
                 <div class="col-md-4 col-md-offset-4">
                     <div class="login-panel panel panel-default">
                         <div class="panel-heading">
@@ -47,7 +47,55 @@
                                         <input id="password" class="form-control" placeholder="Password" name="password" type="password" value="">
                                     </div>
                                     <!-- Change this to a button or input when using this as a form -->
-                                    <button id="login-link" onClick = "doLogin();" class="btn btn-lg btn-success btn-block">Login</button>
+                                    <div class="form-group">
+                                        <button id="login-link" onclick="doLogin();" class="btn btn-lg btn-success btn-block">Login</button>
+                                    </div>
+                                    <div class="form-group pull-right">
+                                        <a href="#" onclick="showRegisterForm()">Register here</a>
+                                    </div>
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="register-form-alert" class="row hidden" style="margin-top:50px">
+              <div class="alert alert-success" role="alert">
+                This is a success alert—check it out!
+              </div>
+            </div>
+            <div id="register-form-container" class="row hidden">
+                <div class="col-md-4 col-md-offset-4">
+                    <div class="login-panel panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Register form</h3>
+                        </div>
+                        <div class="panel-body">
+                            <form role="form">
+                                <fieldset>
+                                    <div class="form-group">
+                                        <input id="register-name" class="form-control" placeholder="Name" name="name" type="text" autofocus>
+                                    </div>
+                                    <div class="form-group">
+                                        <input id="register-surname" class="form-control" placeholder="Surname" name="surname" type="text" autofocus>
+                                    </div>
+                                    <div class="form-group">
+                                        <input id="register-email" class="form-control" placeholder="E-mail" name="email" type="email" autofocus>
+                                    </div>
+                                    <div class="form-group">
+                                        <input id="register-username" class="form-control" placeholder="Username" name="username" type="text" autofocus>
+                                    </div>
+                                    <div class="form-group">
+                                        <input id="register-password" class="form-control" placeholder="Password" name="password" type="password" value="">
+                                    </div>
+                                    <!-- Change this to a button or input when using this as a form -->
+                                    <div class="form-group">
+                                        <button id="register-link" onclick="doRegister();" class="btn btn-lg btn-success btn-block">Register</button>
+                                    </div>
+                                    <div class="form-group pull-right">
+                                        <a href="#" onclick="showLoginForm()">Back to login</a>
+                                    </div>
                                 </fieldset>
                             </form>
                         </div>
@@ -63,22 +111,58 @@
         <script src="./assets/js/bootstrap.min.js"></script>
 
         <script type="text/javascript">
+
+            $(function(){
+              if(window.localStorage.getItem("token")){
+              window.location ="index.html";
+            }else {
+              $('body').show();
+            }
+            });
+
+            function showRegisterForm(){
+                $("#login-form-container").addClass("hidden");
+                $("#register-form-container").removeClass("hidden");
+            }
+
+            function showLoginForm(){
+                $("#login-form-container").removeClass("hidden");
+                $("#register-form-container").addClass("hidden");
+            }
+
+            function doRegister(){
+              var registerInfo = {
+                "name" : $("#register-name").val(),
+                "surname" : $("#register-surname").val(),
+                "email" : $("#register-email").val(),
+                "username" : $("#register-username").val(),
+                "password" : $("#register-password").val()
+              };
+              $("#register-link").prop('disabled',true);
+                $.post( "http://localhost/webprogramming/api/users/register", registerInfo).done(function( data ) {
+                    console.log(data);
+                    $("#register-form-container").addClass("hidden");
+                    $("#register-form-alert .alert").html(data.message);
+                    $("#register-form-alert").removeClass("hidden");
+                }).fail(function() {
+                    alert( "error" );
+                    $("#register-link").prop('disabled',false);
+                });
+            }
+
             function doLogin(){
               var loginInfo = {
                 "email" : $("#email").val(),
                 "password" : $("#password").val()
               };
-
               $("#login-link").prop('disabled',true);
-                $.post( "http://localhost/webprogramming/api/users/login", loginInfo)
-                .done(function( data ) {
-                  console.log("OKKKKK");
-                  alert( "Data Loaded: " + data );
+                $.post("http://localhost/webprogramming/api/users/login",loginInfo).done(function(data) {
+                  window.localStorage.setItem("token", data.token);
+                  window.location = "index.html";
                 }).fail(function() {
                     alert( "error" );
                     $("#login-link").prop('disabled',false);
-                    console.log("NOT OKKK");
-                  });
+                });
             }
         </script>
     </body>
