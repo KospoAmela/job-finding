@@ -59,7 +59,7 @@ class UserService extends BaseService
           ]);
         $message = "http://localhost/webprogramming/api/users/confirm/".$token;
         $mail = new Mailer();
-        $mail->mailer($u['email'],
+        $mail->mailer($user['email'],
         $message, "Validation token");
 
         return $u;
@@ -79,7 +79,7 @@ class UserService extends BaseService
 
     public function login($user)
     {
-        $db_user = $this->dao->getUserByEmail($user['email']);
+        $db_user = $this->dao->getUserByEmail($user["email"]);
 
         if (!isset($db_user['id'])) throw new Exception("User doesn't exist", 400);
 
@@ -92,7 +92,7 @@ class UserService extends BaseService
 
     public function forgot($user)
     {
-        $userDB = $this->dao->getUserByEmail($data['email']);
+        $userDB = $this->dao->getUserByEmail($user['email']);
         if(!isset($userDB['id']))
         {
             throw new \Exception("There's no account with that email", 400);

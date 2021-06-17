@@ -38,20 +38,23 @@
                             <h3 class="panel-title">Please Sign In</h3>
                         </div>
                         <div class="panel-body">
-                            <form role="form">
+                            <form id="login-form" role="form">
                                 <fieldset>
                                     <div class="form-group">
                                         <input id="email" class="form-control" placeholder="E-mail" name="email" type="email" autofocus>
                                     </div>
                                     <div class="form-group">
-                                        <input id="password" class="form-control" placeholder="Password" name="password" type="password" value="">
+                                        <input id="password" class="form-control" placeholder="Password" name="password" type="password">
                                     </div>
-                                    <!-- Change this to a button or input when using this as a form -->
                                     <div class="form-group">
                                         <button id="login-link" onclick="doLogin();" class="btn btn-lg btn-success btn-block">Login</button>
                                     </div>
                                     <div class="form-group pull-right">
                                         <a href="#" onclick="showRegisterForm()">Register here</a>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <a href="#" onclick="showResetPassword()">Forgot password</a>
                                     </div>
                                 </fieldset>
                             </form>
@@ -102,6 +105,58 @@
                     </div>
                 </div>
             </div>
+
+            <div  id="forgot-password-form-container" class="row hidden">
+                <div class="col-md-4 col-md-offset-4">
+                    <div class="login-panel panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Forgot password</h3>
+                        </div>
+                        <div class="panel-body">
+                            <form role="form">
+                                <fieldset>
+                                    <div class="form-group">
+                                        <input id="reset-email" class="form-control" placeholder="E-mail" name="email" type="email" autofocus>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <button id="reset-link" onclick="doReset();" class="btn btn-lg btn-success btn-block">Send recovery link</button>
+                                    </div>
+                                    <div class="form-group pull-right">
+                                        <a href="#" onclick="showLoginForm()">Back to login</a>
+                                    </div>
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div  id="change-password-form-container" class="row hidden">
+                <div class="col-md-4 col-md-offset-4">
+                    <div class="login-panel panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Change password</h3>
+                        </div>
+                        <div class="panel-body">
+                            <form role="form">
+                                <fieldset>
+                                    <div class="form-group">
+                                        <input id="token" class="form-control" placeholder="Email token" name="token" type="text" value="">
+                                    </div>
+                                    <div class="form-group">
+                                        <input id="new-password" class="form-control" placeholder="New password" name="password" type="password" value="">
+                                    </div>
+                                    <div class="form-group">
+                                        <button id="change-password-link" onclick="changePassword();" class="btn btn-lg btn-success btn-block">Change password</button>
+                                    </div>
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- jQuery -->
@@ -109,6 +164,7 @@
 
         <!-- Bootstrap Core JavaScript -->
         <script src="./assets/js/bootstrap.min.js"></script>
+
 
         <script type="text/javascript">
 
@@ -144,25 +200,65 @@
                     $("#register-form-container").addClass("hidden");
                     $("#register-form-alert .alert").html(data.message);
                     $("#register-form-alert").removeClass("hidden");
-                }).fail(function() {
-                    alert( "error" );
+                    window.location = "index.html";
+                }).fail(function(error) {
+                    console.log(error);
                     $("#register-link").prop('disabled',false);
                 });
             }
 
+
             function doLogin(){
-              var loginInfo = {
-                "email" : $("#email").val(),
-                "password" : $("#password").val()
+              console.log("bla");
+              $("login-link").prop('disabled', true);
+              console.log("blabla");
+              $.post("api/users/login",
+              {
+                'email' : $('#email').val(),
+                'password' : $('#password').val()
+              }, function(data, status){
+                alert("Data: " + data + "\nStatus: " + status);
+                console.log(data.token);
+                window.localStorage.setItem("token", data.token);
+                window.location = "index.html";
+              }).fail(function (response){
+                alert(response.getText);
+                $("login-link").prop('disabled', false);
+              });
+              console.log("blablabla");
+            }
+
+            function showResetPassword(){
+                $("#forgot-password-form-container").removeClass("hidden");
+                $("#login-form-container").addClass("hidden");
+            }
+
+            function doReset(){
+              var resetInfo = {
+                "email" : $("#reset-email").val()
               };
-              $("#login-link").prop('disabled',true);
-                $.post("http://localhost/webprogramming/api/users/login",loginInfo).done(function(data) {
-                  window.localStorage.setItem("token", data.token);
-                  window.location = "index.html";
-                }).fail(function() {
-                    alert( "error" );
-                    $("#login-link").prop('disabled',false);
-                });
+              $.post( "http://localhost/webprogramming/api/users/forgot", resetInfo).done(function( data ) {
+                  alert("ok");
+                  $("#change-password-form-container").removeClass("hidden");
+                  $("#forgot-password-form-container").addClass("hidden");
+              }).fail(function() {
+                  alert( "error" );
+                  $("#reset-link").prop('disabled',false);
+              });
+            }
+
+            function changePassword(){
+              var resetInfo = {
+                "token" : $("#token").val(),
+                "password" : $("#new-password").val()
+              };
+
+              $.post( "http://localhost/webprogramming/api/users/reset", resetInfo).done(function( data ) {
+                  alert("ok");
+              }).fail(function() {
+                  alert( "error" );
+                  $("#reset-link").prop('disabled',false);
+              });
             }
         </script>
     </body>

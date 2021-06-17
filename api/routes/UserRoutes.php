@@ -47,8 +47,7 @@ Flight::route('GET /user/users', function(){
  * )
  */
 Flight::route('POST /users/register', function(){
-    Flight::userService()->register(Flight::request()->data->getData());
-    Flight::json(["message" => "Confirmation email has been sent, please confirm your account"]);
+    Flight::json(Flight::userService()->register(Flight::request()->data->getData()));
 });
 
 /**
