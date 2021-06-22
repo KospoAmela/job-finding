@@ -41,10 +41,10 @@
                             <form id="login-form" role="form">
                                 <fieldset>
                                     <div class="form-group">
-                                        <input id="email" class="form-control" placeholder="E-mail" name="email" type="email" autofocus>
+                                        <input class="form-control" placeholder="E-mail" name="email" type="email" autofocus>
                                     </div>
                                     <div class="form-group">
-                                        <input id="password" class="form-control" placeholder="Password" name="password" type="password">
+                                        <input class="form-control" placeholder="Password" name="password" type="password">
                                     </div>
                                     <div class="form-group">
                                         <button id="login-link" onclick="doLogin();" class="btn btn-lg btn-success btn-block">Login</button>
@@ -65,7 +65,7 @@
 
             <div id="register-form-alert" class="row hidden" style="margin-top:50px">
               <div class="alert alert-success" role="alert">
-                This is a success alert—check it out!
+                Confirmation email has been sent to you!
               </div>
             </div>
             <div id="register-form-container" class="row hidden">
@@ -75,22 +75,22 @@
                             <h3 class="panel-title">Register form</h3>
                         </div>
                         <div class="panel-body">
-                            <form role="form">
+                            <form id="register-form" role="form">
                                 <fieldset>
                                     <div class="form-group">
-                                        <input id="register-name" class="form-control" placeholder="Name" name="name" type="text" autofocus>
+                                        <input class="form-control" placeholder="Name" name="name" type="text" autofocus>
                                     </div>
                                     <div class="form-group">
-                                        <input id="register-surname" class="form-control" placeholder="Surname" name="surname" type="text" autofocus>
+                                        <input class="form-control" placeholder="Surname" name="surname" type="text" autofocus>
                                     </div>
                                     <div class="form-group">
-                                        <input id="register-email" class="form-control" placeholder="E-mail" name="email" type="email" autofocus>
+                                        <input class="form-control" placeholder="E-mail" name="email" type="email" autofocus>
                                     </div>
                                     <div class="form-group">
-                                        <input id="register-username" class="form-control" placeholder="Username" name="username" type="text" autofocus>
+                                        <input class="form-control" placeholder="Username" name="username" type="text" autofocus>
                                     </div>
                                     <div class="form-group">
-                                        <input id="register-password" class="form-control" placeholder="Password" name="password" type="password" value="">
+                                        <input class="form-control" placeholder="Password" name="password" type="password" value="">
                                     </div>
                                     <!-- Change this to a button or input when using this as a form -->
                                     <div class="form-group">
@@ -113,7 +113,7 @@
                             <h3 class="panel-title">Forgot password</h3>
                         </div>
                         <div class="panel-body">
-                            <form role="form">
+                            <form id="reset-password-form"role="form">
                                 <fieldset>
                                     <div class="form-group">
                                         <input id="reset-email" class="form-control" placeholder="E-mail" name="email" type="email" autofocus>
@@ -140,13 +140,13 @@
                             <h3 class="panel-title">Change password</h3>
                         </div>
                         <div class="panel-body">
-                            <form role="form">
+                            <form id="change-password-form"role="form">
                                 <fieldset>
                                     <div class="form-group">
-                                        <input id="token" class="form-control" placeholder="Email token" name="token" type="text" value="">
+                                        <input class="form-control" placeholder="Email token" name="token" type="text" value="">
                                     </div>
                                     <div class="form-group">
-                                        <input id="new-password" class="form-control" placeholder="New password" name="password" type="password" value="">
+                                        <input class="form-control" placeholder="New password" name="password" type="password" value="">
                                     </div>
                                     <div class="form-group">
                                         <button id="change-password-link" onclick="changePassword();" class="btn btn-lg btn-success btn-block">Change password</button>
@@ -164,6 +164,9 @@
 
         <!-- Bootstrap Core JavaScript -->
         <script src="./assets/js/bootstrap.min.js"></script>
+
+        <!-- Include utils.js -->
+        <script src="./assets/utils.js"></script>
 
 
         <script type="text/javascript">
@@ -187,16 +190,9 @@
             }
 
             function doRegister(){
-              var registerInfo = {
-                "name" : $("#register-name").val(),
-                "surname" : $("#register-surname").val(),
-                "email" : $("#register-email").val(),
-                "username" : $("#register-username").val(),
-                "password" : $("#register-password").val()
-              };
               $("#register-link").prop('disabled',true);
-                $.post( "http://localhost/webprogramming/api/users/register", registerInfo).done(function( data ) {
-                    console.log(data);
+              console.log(jsonize($("#register-form")));
+                $.post( "http://localhost/webprogramming/api/users/register", jsonize("#register-form")).done(function( data ) {
                     $("#register-form-container").addClass("hidden");
                     $("#register-form-alert .alert").html(data.message);
                     $("#register-form-alert").removeClass("hidden");
@@ -209,12 +205,8 @@
 
             function doLogin(){
               $("login-link").prop('disabled', true);
-              var loginInfo = {
-                'email' : $('#email').val(),
-                'password' : $('#password').val()
-              };
-              console.log(loginInfo);
-              $.post( "api/users/login", loginInfo).done(function( data ) {
+              console.log(jsonize($("#login-form")));
+              $.post( "http://localhost/webprogramming/api/users/login", jsonize("#login-form")).done(function( data ) {
                     window.localStorage.setItem("token", data.token);
                     window.location = "index.html";
               }).fail(function (response){
@@ -229,10 +221,7 @@
             }
 
             function doReset(){
-              var resetInfo = {
-                "email" : $("#reset-email").val()
-              };
-              $.post( "http://localhost/webprogramming/api/users/forgot", resetInfo).done(function( data ) {
+              $.post( "http://localhost/webprogramming/api/users/forgot", jsonize("#reset-password-form")).done(function( data ) {
                   alert("ok");
                   $("#change-password-form-container").removeClass("hidden");
                   $("#forgot-password-form-container").addClass("hidden");
@@ -243,12 +232,7 @@
             }
 
             function changePassword(){
-              var resetInfo = {
-                "token" : $("#token").val(),
-                "password" : $("#new-password").val()
-              };
-
-              $.post( "http://localhost/webprogramming/api/users/reset", resetInfo).done(function( data ) {
+              $.post( "http://localhost/webprogramming/api/users/reset", jsonize("#change-password-form")).done(function( data ) {
                   alert("ok");
               }).fail(function() {
                   alert( "error" );
