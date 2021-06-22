@@ -1,0 +1,80 @@
+<div id="page-wrapper">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">Jobs</h1>
+            </div>
+            <!-- /.col-lg-12 -->
+        </div>
+        <!-- /.row -->
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        DataTables Advanced Tables
+                    </div>
+                    <!-- /.panel-heading -->
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table id="jobs-table" class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                <thead>
+                                    <tr>
+                                        <th>Title</th>
+                                        <th>Company</th>
+                                        <th>Description</th>
+                                        <th>Posted at</th>
+                                        <th>Deadline</th>
+                                        <th>Country</th>
+                                        <th>City</th>
+                                        <th>Category</th>
+                                        <th>Type</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- /.panel-body -->
+                </div>
+                <!-- /.panel -->
+            </div>
+            <!-- /.col-lg-12 -->
+        </div>
+    </div>
+    <!-- /.container-fluid -->
+</div>
+<!-- /#page-wrapper -->
+<script type="text/javascript">
+    alert("1");
+
+    getJobs();
+
+    function getJobs(){
+        $.ajax({
+         url: "api/jobs",
+         type: "GET",
+         beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
+         success: function(data) {
+           console.log(data);
+           var html = "";
+           for(var i = 0; i < data.length; i++){
+              html += '<tr class="odd gradeX">'+
+                  '<td>'+data[i].title+'</td>'+
+                  '<td>'+data[i].company+'</td>'+
+                  '<td>'+data[i].description+'</td>'+
+                  '<td>'+data[i].posted_at+'</td>'+
+                  '<td>'+data[i].deadline+'</td>'+
+                  '<td>'+data[i].country+'</td>'+
+                  '<td>'+data[i].city+'</td>'+
+                  '<td>'+data[i].category+'</td>'+
+                  '<td>'+data[i].type+'</td>'+
+              '</tr>';
+           }
+           $("#jobs-table tbody").html(html);
+         }
+      });
+
+    }
+</script>
