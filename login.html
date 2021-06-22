@@ -192,7 +192,7 @@
             function doRegister(){
               $("#register-link").prop('disabled',true);
               console.log(jsonize($("#register-form")));
-                $.post( "http://localhost/webprogramming/api/users/register", jsonize("#register-form")).done(function( data ) {
+                $.post( "api/users/register", jsonize("#register-form")).done(function( data ) {
                     $("#register-form-container").addClass("hidden");
                     $("#register-form-alert .alert").html(data.message);
                     $("#register-form-alert").removeClass("hidden");
@@ -206,7 +206,7 @@
             function doLogin(){
               $("login-link").prop('disabled', true);
               console.log(jsonize($("#login-form")));
-              $.post( "http://localhost/webprogramming/api/users/login", jsonize("#login-form")).done(function( data ) {
+              $.post( "api/users/login", jsonize("#login-form")).done(function( data ) {
                     window.localStorage.setItem("token", data.token);
                     window.location = "index.html";
               }).fail(function (response){
@@ -221,7 +221,7 @@
             }
 
             function doReset(){
-              $.post( "http://localhost/webprogramming/api/users/forgot", jsonize("#reset-password-form")).done(function( data ) {
+              $.post( "api/users/forgot", jsonize("#reset-password-form")).done(function( data ) {
                   alert("ok");
                   $("#change-password-form-container").removeClass("hidden");
                   $("#forgot-password-form-container").addClass("hidden");
@@ -232,7 +232,7 @@
             }
 
             function changePassword(){
-              $.post( "http://localhost/webprogramming/api/users/reset", jsonize("#change-password-form")).done(function( data ) {
+              $.post( "api/users/reset", jsonize("#change-password-form")).done(function( data ) {
                   alert("ok");
               }).fail(function() {
                   alert( "error" );
