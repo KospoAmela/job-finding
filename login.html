@@ -207,25 +207,20 @@
                 });
             }
 
-
             function doLogin(){
-              console.log("bla");
               $("login-link").prop('disabled', true);
-              console.log("blabla");
-              $.post("api/users/login",
-              {
+              var loginInfo = {
                 'email' : $('#email').val(),
                 'password' : $('#password').val()
-              }, function(data, status){
-                alert("Data: " + data + "\nStatus: " + status);
-                console.log(data.token);
-                window.localStorage.setItem("token", data.token);
-                window.location = "index.html";
+              };
+              console.log(loginInfo);
+              $.post( "api/users/login", loginInfo).done(function( data ) {
+                    window.localStorage.setItem("token", data.token);
+                    window.location = "index.html";
               }).fail(function (response){
-                alert(response.getText);
-                $("login-link").prop('disabled', false);
+                    alert(response.getText);
+                    $("login-link").prop('disabled', false);
               });
-              console.log("blablabla");
             }
 
             function showResetPassword(){
