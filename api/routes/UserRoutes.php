@@ -46,8 +46,8 @@ Flight::route('GET /user/users', function(){
  *     @OA\Response(response="200", description="Add a user to database")
  * )
  */
-Flight::route('POST /users/register', function(){
-    Flight::json(Flight::userService()->register(Flight::request()->data->getData()));
+Flight::route('POST /register', function(){
+    Flight::json(Flight::jwt(Flight::userService()->register(Flight::request()->data->getData())));
 });
 
 /**
@@ -67,7 +67,7 @@ Flight::route('PUT /user/users/update', function(){
  *     @OA\Response(response="200", description="Activate a user account")
  * )
  */
-Flight::route('GET /users/confirm/@token', function($token){
+Flight::route('GET /confirm/@token', function($token){
     Flight::json(Flight::jwt(Flight::userService()->confirm($token)));
 });
 
@@ -76,7 +76,7 @@ Flight::route('GET /users/confirm/@token', function($token){
  *     @OA\Response(response="200", description="Validate login credentials")
  * )
  */
-Flight::route('POST /users/login', function(){
+Flight::route('POST /login', function(){
     Flight::json(Flight::jwt(Flight::userService()->login(Flight::request()->data->getData())));
 });
 
@@ -85,7 +85,7 @@ Flight::route('POST /users/login', function(){
  *     @OA\Response(response="200", description="Get recovery link for a forgotten password")
  * )
  */
-Flight::route('POST /users/forgot', function(){
+Flight::route('POST /forgot', function(){
     Flight::userService()->forgot(Flight::request()->data->getData());
     Flight::json(["message" => "Recovery link has been sent to your email."]);
 });
@@ -95,6 +95,6 @@ Flight::route('POST /users/forgot', function(){
  *     @OA\Response(response="200", description="Reset password")
  * )
  */
-Flight::route('POST /users/reset', function(){
+Flight::route('POST /reset', function(){
     Flight::json(Flight::jwt(Flight::userService()->reset(Flight::request()->data->getData())));
 });
