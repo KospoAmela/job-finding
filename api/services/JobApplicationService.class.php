@@ -36,5 +36,9 @@ class JobApplicationService extends BaseService{
       $this->dao->insertApplication($application);
   }
 
+  public function getApplicationsByCompanyId($company_id){
+    $this->dao->getApplicationsByCompanyId($company_id);
+  }
+
 }
  ?>

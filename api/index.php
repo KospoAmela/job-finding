@@ -16,6 +16,7 @@ require_once dirname(__FILE__)."/services/TypeService.class.php";
 require_once dirname(__FILE__)."/services/CategoryService.class.php";
 require_once dirname(__FILE__)."/services/CompanyService.class.php";
 require_once dirname(__FILE__)."/services/JobApplicationService.class.php";
+require_once dirname(__FILE__)."/services/UserCompanyService.class.php";
 
 //register all services
 Flight::register('userService', 'UserService');
@@ -24,6 +25,7 @@ Flight::register('companyService', 'CompanyService');
 Flight::register('typeService', 'TypeService');
 Flight::register('categoryService', 'CategoryService');
 Flight::register('jobApplicationService', 'JobApplicationService');
+Flight::register('userCompanyService', 'userCompanyService');
 
 //include all routes
 require_once dirname(__FILE__)."/routes/middleware.php";

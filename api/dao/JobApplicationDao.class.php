@@ -33,4 +33,8 @@ class JobApplicationDao extends BaseDao
         $this->insert($application, "job_applications");
     }
 
+    public function getApplicationsByCompanyId($company_id){
+        return $this->query("SELECT * FROM job_applications WHERE company_id = :company_id", ["company_id" => $company_id]);
+    }
+
 }
