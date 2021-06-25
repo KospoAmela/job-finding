@@ -44,10 +44,10 @@
                             <form id="login-form" role="form">
                                 <fieldset>
                                     <div class="form-group">
-                                        <input class="form-control" placeholder="E-mail" name="email" type="email" autofocus>
+                                        <input id="login-email" class="form-control" placeholder="E-mail" name="email" type="email" autofocus>
                                     </div>
                                     <div class="form-group">
-                                        <input class="form-control" placeholder="Password" name="password" type="password">
+                                        <input id="login-password" class="form-control" placeholder="Password" name="password" type="password">
                                     </div>
                                     <div class="form-group">
                                         <button id="login-link" type="submit" class="btn btn-lg btn-success btn-block">Login</button>
@@ -171,8 +171,7 @@
         <!-- Toastr -->
         <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
-        <!-- Include utils.js -->
-        <script src="./assets/utils.js"></script>
+
 
 
 
@@ -180,6 +179,7 @@
 
         $("#login-form").on("submit", function(e){
                 e.preventDefault();
+                console.log("submit");
                doLogin();
             });
 
@@ -231,15 +231,15 @@
             function doLogin(){
               $("login-link").prop('disabled', true);
               var login_info = {
-                     'email' : $('#email').val(),
-                     'password' : $('#password').val()
+                     'email' : $('#login-email').val(),
+                     'password' : $('#login-password').val()
               }
               $.post( "api/login", login_info).done(function( data ) {
                   console.log(data.token);
                   window.localStorage.setItem("token", data.token);
                   window.location = "index.html";
               }).fail(function (response){
-                  toastr.error(response.getMessage);
+                  toastr.error(response.responseJSON.message);
                   $("login-link").prop('disabled', false);
               });
             }

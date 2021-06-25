@@ -5,7 +5,7 @@ require_once dirname(__FILE__)."/../dao/CompanyDao.class.php";
 /**
  *
  */
-class UserCompany extends BaseService
+class UserCompanyService extends BaseService
 {
   private $companyDao;
   public function __construct()
@@ -34,6 +34,3 @@ class UserCompany extends BaseService
       return $finalUser;
   }
 }
-
-
- ?>

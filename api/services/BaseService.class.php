@@ -18,4 +18,3 @@ class BaseService {
         return $this->dao->getById($id);
     }
 }
- ?>

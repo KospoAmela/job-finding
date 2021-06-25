@@ -1,4 +1,4 @@
-<<?php
+<?php
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
@@ -77,7 +77,13 @@ Flight::route('GET /confirm/@token', function($token){
  * )
  */
 Flight::route('POST /login', function(){
-    Flight::json(Flight::jwt(Flight::userCompanyService()->login(Flight::request()->data->getData())));
+    try {
+      $data = Flight::userCompanyService()->login(Flight::request()->data->getData());
+      Flight::json(Flight::jwt($data));
+    } catch (\Exception $e) {
+
+      Flight::json(["message" => $e->getMessage()], 401);
+    }
 });
 
 /**

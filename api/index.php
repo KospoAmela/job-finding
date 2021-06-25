@@ -4,18 +4,19 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-use \Firebase\JWT\JWT;
+
 
 require_once dirname(__FILE__)."/../vendor/autoload.php";
 
-
+use \Firebase\JWT\JWT;
 //include all services
-require_once dirname(__FILE__)."/services/UserService.class.php";
+
 require_once dirname(__FILE__)."/services/JobService.class.php";
 require_once dirname(__FILE__)."/services/TypeService.class.php";
 require_once dirname(__FILE__)."/services/CategoryService.class.php";
 require_once dirname(__FILE__)."/services/CompanyService.class.php";
 require_once dirname(__FILE__)."/services/JobApplicationService.class.php";
+require_once dirname(__FILE__)."/services/UserService.class.php";
 require_once dirname(__FILE__)."/services/UserCompanyService.class.php";
 
 //register all services
@@ -25,11 +26,12 @@ Flight::register('companyService', 'CompanyService');
 Flight::register('typeService', 'TypeService');
 Flight::register('categoryService', 'CategoryService');
 Flight::register('jobApplicationService', 'JobApplicationService');
-Flight::register('userCompanyService', 'userCompanyService');
+Flight::register('userCompanyService', 'UserCompanyService');
 
 //include all routes
-require_once dirname(__FILE__)."/routes/middleware.php";
 require_once dirname(__FILE__)."/routes/UserRoutes.php";
+require_once dirname(__FILE__)."/routes/middleware.php";
+
 require_once dirname(__FILE__)."/routes/JobRoutes.php";
 require_once dirname(__FILE__)."/routes/TypeRoutes.php";
 require_once dirname(__FILE__)."/routes/CategoryRoutes.php";
@@ -62,7 +64,7 @@ Flight::map('jwt', function($user){
 });
 
 /* error handling for our API */
-Flight::map('error', function(Exception $ex){
+Flight::map('error', function(Throwable $ex){
   Flight::json(["message" => $ex->getMessage()], $ex->getCode() ? $ex->getCode() : 500);
 });
 
