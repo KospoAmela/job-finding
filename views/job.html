@@ -1,0 +1,64 @@
+<!-- Page Content -->
+<div id="page-wrapper">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 id="title" class="page-header"></h1>
+            </div>
+
+            <!-- /.col-lg-12 -->
+            <div class="col-lg-12">
+                <p id="type" class = "paragraph"></p>
+                <p id="category" class = "paragraph"></p>
+                <p id="description" class = "paragraph"></p>
+                <p id="deadline" class = "paragraph"></p>
+            </div>
+            <hr>
+            <div class="col-lg-12">
+              <p id="company" class = "paragraph"></p>
+              <p id="country" class = "paragraph"></p>
+              <p id="city" class = "paragraph"></p>
+              <p id="posted_at" class = "paragraph"></p>
+            </div>
+            <hr>
+            <div class="">
+              <button type="button" id="apply-button" onclick="doApply();" class="btn btn-success">Submit application</button>
+            </div>
+        </div>
+        <!-- /.row -->
+    </div>
+    <!-- /.container-fluid -->
+</div>
+<!-- /#page-wrapper -->
+<script type="text/javascript">
+  var id = localStorage.getItem('job_id');
+
+  $.ajax({
+   url: "api/jobs/"+id,
+   type: "GET",
+   beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
+   success: function(data) {
+     console.log(data);
+     $("#title").html("" + data.title);
+     console.log("" + data.title);
+     $("#description").html("" + data.description);
+     $("#company").html("" + data.company);
+     $("#deadline").html("" + data.deadline);
+     $("#type").html("" + data.type);
+     $("#category").html("" + data.category);
+     $("#country").html("" + data.country);
+     $("#city").html("" + data.city);
+     $("#posted_at").html("" + data.posted_at);
+     }
+});
+
+function doApply(){
+  $("#apply-button").prop('disabled', true);
+  $.post( "api/applications/", id).done(function( data ) {
+      toastr.success("You have successfully applied for this job");
+  }).fail(function(response) {
+      toastr.error(response.responseJSON.message);
+      $("#apply-button").prop('disabled',false);
+  });
+};
+</script>

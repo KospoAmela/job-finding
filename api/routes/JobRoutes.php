@@ -23,10 +23,11 @@ error_reporting(E_ALL);
   * )
   */
 Flight::route('GET /jobs', function(){
-    $offset = Flight::query("offset", 0);
+  /*  $offset = Flight::query("offset", 0);
     $limit = Flight::query("limit", 30);
     $search = Flight::query("search");
-    Flight::json(Flight::jobService()->getJobs($search, $offset, $limit));
+    Flight::json(Flight::jobService()->getJobs($search, $offset, $limit));*/
+    Flight::json(Flight::jobService()->getAllJobs());
 });
 
 /**
@@ -36,9 +37,7 @@ Flight::route('GET /jobs', function(){
  * )
  */
 Flight::route('GET /jobs/@id', function($id){
-    $jobService = new JobService();
-    $job = $jobService->getById($id);
-    Flight::json($job);
+    Flight::json(Flight::jobService()->getJobById($id));
 });
 
 /**

@@ -30,8 +30,20 @@ class JobService extends BaseService{
         return parent::update($id, $job);
     }
 
-    public function getById($id){
-        return parent::getById($id);
+    public function getJobById($id){
+        $job = parent::getById($id);
+        return [
+          "id" => $job['id'],
+          "company" => $this->companyDao->getCompanyById($job['company_id'])['name'],
+          "title" => $job['title'],
+          "description" => $job['description'],
+          "posted_at" => $job['posted_at'],
+          "deadline" => $job['deadline'],
+          "category" => $this->categoryDao->getCategoryById($job['category_id'])['name_of_category'],
+          "type" => $this->typeDao->getTypeById($job['type_id'])['name_of_type'],
+          "country" => $job['country'],
+          "city" => $job['city']
+        ];
     }
 
     public function addJob($company, $job){
@@ -68,6 +80,27 @@ class JobService extends BaseService{
           $this->dao->rollBack();
           echo $e->getMessage();
       }
+    }
+
+    function getAllJobs(){
+        $jobs = $this->dao->getAllJobs();
+        $finalJobs = array();
+        foreach ($jobs as $job) {
+          $j = [
+            "id" => $job['id'],
+            "company" => $this->companyDao->getCompanyById($job['company_id'])['name'],
+            "title" => $job['title'],
+            "description" => $job['description'],
+            "posted_at" => $job['posted_at'],
+            "deadline" => $job['deadline'],
+            "category" => $this->categoryDao->getCategoryById($job['category_id'])['name_of_category'],
+            "type" => $this->typeDao->getTypeById($job['type_id'])['name_of_type'],
+            "country" => $job['country'],
+            "city" => $job['city']
+          ];
+          array_push($finalJobs, $j);
+        }
+        return $finalJobs;
     }
 }
 

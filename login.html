@@ -146,7 +146,7 @@
                             <form id="change-password-form"role="form">
                                 <fieldset>
                                     <div class="form-group">
-                                        <input class="form-control" placeholder="Email token" name="token" type="text" value="">
+                                        <input id="change-email" class="form-control" placeholder="Email token" name="token" type="text" value="">
                                     </div>
                                     <div class="form-group">
                                         <input class="form-control" placeholder="New password" name="password" type="password" value="">
@@ -251,7 +251,7 @@
 
             function doReset(){
               $.post( "api/forgot", jsonize("#reset-password-form")).done(function( data ) {
-                  toastr.success("Yourtoken has been sent to your email");
+                  toastr.success("Your token has been sent to your email");
                   $("#change-password-form-container").removeClass("hidden");
                   $("#forgot-password-form-container").addClass("hidden");
               }).fail(function(response) {

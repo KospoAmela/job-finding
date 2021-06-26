@@ -29,8 +29,8 @@ Flight::route('GET /company/applications', function(){
   }
 });
 
-Flight::route('POST /user/applications/{job_id}', function($job_id){
+Flight::route('POST /applications', function(){
   $jwtUser = Flight::get('user');
-  Flight::json(Flight::jobApplicationService()->add($job_id, Flight::get('user')['id']));
+  Flight::json(Flight::jobApplicationService()->add(Flight::request()->data->getData(), Flight::get('user')['id']));
 });
 ?>

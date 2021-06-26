@@ -6,10 +6,11 @@
  * )
  */
 Flight::route('GET /companies', function(){
-    $offset = Flight::query("offset", 0);
+    /*$offset = Flight::query("offset", 0);
     $limit = Flight::query("limit", 30);
     $search = Flight::query("search");
-    Flight::json(Flight::companyService()->getCompanies($search, $offset, $limit));
+    Flight::json(Flight::companyService()->getCompanies($search, $offset, $limit));*/
+    Flight::json(Flight::companyService()->getAllCompanies());
 });
 
 /**

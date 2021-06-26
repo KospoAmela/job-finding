@@ -15,16 +15,16 @@ class JobApplicationService extends BaseService{
 
   public function getApplicationById($id)
   {
-      $this->dao->getApplicationById($id);
+      return $this->dao->getApplicationById($id);
   }
 
   public function getApplicationsByJobId($job_id)
   {
-      $this->dao->getApplicationsByJobId($job_id);
+      return $this->dao->getApplicationsByJobId($job_id);
   }
 
   public function getApplicationsByUserId($user_id){
-      $this->dao->getApplicationsByUserId($user_id);
+      return $this->dao->getApplicationsByUserId($user_id);
   }
 
   public function insertApplication($job_id, $user_id){
@@ -37,7 +37,7 @@ class JobApplicationService extends BaseService{
   }
 
   public function getApplicationsByCompanyId($company_id){
-    $this->dao->getApplicationsByCompanyId($company_id);
+      return $this->dao->getApplicationsByCompanyId($company_id);
   }
 
 }

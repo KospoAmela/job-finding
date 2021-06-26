@@ -11,7 +11,7 @@
             <div class="col-lg-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        DataTables Advanced Tables
+                        Jobs
                     </div>
                     <!-- /.panel-heading -->
                     <div class="panel-body">
@@ -30,7 +30,7 @@
                                         <th>Type</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="row">
 
                                 </tbody>
                             </table>
@@ -48,6 +48,8 @@
 <!-- /#page-wrapper -->
 <script type="text/javascript">
 
+
+
     getJobs();
 
     function getJobs(){
@@ -59,7 +61,7 @@
            console.log(data);
            var html = "";
            for(var i = 0; i < data.length; i++){
-              html += '<tr class="odd gradeX">'+
+              html += '<tr id="'+data[i].id +'" onclick="openPage();" class="odd gradeX">'+
                   '<td>'+data[i].title+'</td>'+
                   '<td>'+data[i].company+'</td>'+
                   '<td>'+data[i].description+'</td>'+
@@ -76,4 +78,14 @@
       });
 
     }
+    function openPage(){
+      $('tr.odd').click(function (){
+          var id = $(this).attr('id');
+          localStorage.removeItem('job_id');
+          window.localStorage.setItem('job_id', id);
+          window.location = '#job';
+      });
+    }
+
+
 </script>
