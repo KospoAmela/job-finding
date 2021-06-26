@@ -21,7 +21,7 @@
               <p id="posted_at" class = "paragraph"></p>
             </div>
             <hr>
-            <div class="">
+            <div class="hidden" id="appy-button">
               <button type="button" id="apply-button" onclick="doApply();" class="btn btn-success">Submit application</button>
             </div>
         </div>
@@ -32,15 +32,16 @@
 <!-- /#page-wrapper -->
 <script type="text/javascript">
   var id = localStorage.getItem('job_id');
-
+  var token = localStorage.getItem('token');
+  if(token.r == "USER"){
+    $("#apply-button").removeClass("hidden");
+  }
   $.ajax({
    url: "api/jobs/"+id,
    type: "GET",
    beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
    success: function(data) {
-     console.log(data);
      $("#title").html("" + data.title);
-     console.log("" + data.title);
      $("#description").html("" + data.description);
      $("#company").html("" + data.company);
      $("#deadline").html("" + data.deadline);
@@ -54,8 +55,9 @@
 
 function doApply(){
   $("#apply-button").prop('disabled', true);
-  $.post( "api/applications/", id).done(function( data ) {
+  $.post( "api/applications", id).done(function( data ) {
       toastr.success("You have successfully applied for this job");
+      $("#apply-button").prop('disabled',false);
   }).fail(function(response) {
       toastr.error(response.responseJSON.message);
       $("#apply-button").prop('disabled',false);

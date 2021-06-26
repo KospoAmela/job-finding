@@ -14,9 +14,9 @@
                         Job Applications
                     </div>
                     <!-- /.panel-heading -->
-                    <div class="panel-body hidden">
+                    <div class="panel-body">
                         <div class="table-responsive">
-                            <table id="user-applications-table" class="table table-striped table-bordered table-hover" id="dataTables-example">
+                            <table id="user-applications-table" class="table table-striped table-bordered table-hover hidden">
                                 <thead>
                                     <tr>
                                         <th>Job</th>
@@ -29,13 +29,13 @@
                             </table>
                         </div>
                     </div>
-                    <div class="panel-body hidden">
+                    <div class="panel-body">
                         <div class="table-responsive">
-                            <table id="company-applications-table" class="table table-striped table-bordered table-hover" id="dataTables-example">
+                            <table id="company-applications-table" class="table table-striped table-bordered table-hover hidden">
                                 <thead>
                                     <tr>
                                         <th>Job</th>
-                                        <<th>User</th>
+                                        <th>User</th>
                                         <th>Timestamp</th>
                                     </tr>
                                 </thead>
@@ -59,30 +59,35 @@
 
     function getApplications(){
         var token = AUtils.parse_jwt(localStorage.getItem("token"));
+        console.log(localStorage.getItem("token"));
+        console.log(token.r);
         if(token.r == "USER"){
+
             $("#user-applications-table").removeClass("hidden");
             $.ajax({
              url: "api/user/applications",
              type: "GET",
-             beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
+             beforeSend: function(xhr){xhr.setRequestHeader('Authorization', localStorage.getItem("token"));},
              success: function(data) {
                console.log(data);
                var html = "";
                for(var i = 0; i < data.length; i++){
-                  html += '<tr class="odd gradeX">'+
-                      '<td>'+data[i].job_id+'</td>'+
-                      '<td>'+data[i].timestamp+'</td>'+
-                  '</tr>';
+                 html += '<tr class="odd gradeX">'+
+                     '<td>'+data[i].job_id+'</td>'+
+                     '<td>'+data[i].timestamp+'</td>'+
+                 '</tr>';
+                 console.log(data[i].job_id);
                }
                $("#user-applications-table tbody").html(html);
              }
+
           });
       }else if(token.r == "COMPANY"){
           $("#company-applications-table").removeClass("hidden");
           $.ajax({
            url: "api/company/applications",
            type: "GET",
-           beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
+           beforeSend: function(xhr){xhr.setRequestHeader('Authorization', localStorage.getItem("token"));},
            success: function(data) {
              console.log(data);
              var html = "";

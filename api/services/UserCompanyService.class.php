@@ -2,6 +2,7 @@
 
 require_once dirname(__FILE__)."/BaseService.class.php";
 require_once dirname(__FILE__)."/../dao/CompanyDao.class.php";
+require_once dirname(__FILE__)."/../dao/UserDao.class.php";
 /**
  *
  */
@@ -21,10 +22,10 @@ class UserCompanyService extends BaseService
       $finalUser = $db_user;
 
       if (!isset($db_user['id']) ) {
-          if(isset($db_company['id'])){
-            $finalUser = $db_company;
+          if(!isset($db_company['id'])){
+            throw new Exception("User doesn't exist", 400);
           }
-        throw new Exception("User doesn't exist", 400);
+        $finalUser = $db_company;
       }
 
       if ($finalUser['status'] != 'ACTIVE') throw new Exception("Account not active", 400);
