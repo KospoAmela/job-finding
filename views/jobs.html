@@ -54,8 +54,6 @@
 
   var id = localStorage.getItem("job_id");
   var token = AUtils.parse_jwt(localStorage.getItem("token"));
-  console.log(token);
-
   if(token.r == "COMPANY"){
     $("#add-new-job-button").removeClass("hidden");
   }
@@ -69,7 +67,6 @@
          type: "GET",
          beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
          success: function(data) {
-           console.log(data);
            var html = "";
            for(var i = 0; i < data.length; i++){
               html += '<tr id="'+data[i].id +'" onclick="openPage();" class="odd gradeX">'+

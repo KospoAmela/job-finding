@@ -224,7 +224,6 @@
 
         $("#login-form").on("submit", function(e){
                 e.preventDefault();
-                console.log("submit");
                doLogin();
             });
 
@@ -266,7 +265,6 @@
                     'password' : $('#register-password').val()
               };
                 $.post( "api/register", register_info).done(function( data ) {
-                    console.log(data.token);
                     $("#register-form-container").addClass("hidden");
                     $("#register-form-alert .alert").html(data.message);
                     $("#register-form-alert").removeClass("hidden");
@@ -285,7 +283,6 @@
                      'password' : $('#login-password').val()
               }
               $.post( "api/login", login_info).done(function( data ) {
-                  console.log(data.token);
                   window.localStorage.setItem("token", data.token);
                   window.location = "index.html";
               }).fail(function (response){
@@ -336,7 +333,6 @@
                     'password' : $('#company-register-password').val()
               };
                 $.post( "api/companies/register", register_info).done(function( data ) {
-                    console.log(data.token);
                     $("#register-form-container").addClass("hidden");
                     $("#register-form-alert .alert").html(data.message);
                     $("#register-form-alert").removeClass("hidden");
