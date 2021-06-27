@@ -45,12 +45,11 @@ Flight::route('GET /jobs/@id', function($id){
  *     @OA\Response(response="200", description="Add a job to database")
  * )
  */
-Flight::route('POST /user/jobs', function(){
+Flight::route('POST /company/jobs', function(){
     if(Flight::get('user')['r'] != "COMPANY"){
         throw new \Exception("Must be a company to post jobs", 403);
     }
-    $job = Flight::jobService()->addJob(Flight::get('user'), Flight::request()->data->getData());
-    Flight::json($job);
+    Flight::json(Flight::jobService()->addJob(Flight::get('user'), Flight::request()->data->getData()));
 });
 
 /**

@@ -9,12 +9,8 @@ class CategoryService extends BaseService{
       $this->dao=new CategoryDao();
   }
 
-  public function getCategories($search){
-      if($search){
-          return $this->dao->searchCategories($search);
-      }else{
-          return $this->dao->getAllCategories();
-      }
+  public function getCategories(){
+      return $this->dao->getAllCategories();
   }
 
   public function add($category){

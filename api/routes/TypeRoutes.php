@@ -6,8 +6,7 @@
  * )
  */
 Flight::route('GET /types', function(){
-    $search = Flight::query("search");
-    Flight::json(Flight::typeService()->getTypes($search));
+    Flight::json(Flight::typeService()->getTypes());
 });
 
 /**

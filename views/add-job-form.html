@@ -1,0 +1,127 @@
+<!-- Page Content -->
+<div id="page-wrapper">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 id="title" class="page-header">New job</h1>
+            </div>
+
+            <!-- /.col-lg-12 -->
+            <div id="new-job-form-container" class="row">
+                <div class="col-md-4 col-md-offset-4">
+                    <div class="login-panel panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Add new job</h3>
+                        </div>
+                        <div class="panel-body">
+                            <form id="new-job" role="form">
+                                <fieldset>
+                                    <div class="form-group">
+                                        <input id="job-title" class="form-control" placeholder="Job title" name="title" type="text" autofocus>
+                                    </div>
+                                    <div class="form-group">
+                                        <textarea id="job-description" class="form-control" rows="3" placeholder="Description"></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Job type</label>
+                                        <select id = "job-type" class="form-control">
+                                            <option>1</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Job category</label>
+                                        <select id = "job-category" class="form-control">
+                                            <option>1</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <input id="job-country" class="form-control" placeholder="Country" name="country" type="text" autofocus>
+                                    </div>
+                                    <div class="form-group">
+                                        <input id="job-city" class="form-control" placeholder="City" name="city" type="text" value="">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>MM/DD/YY H:m:s</label>
+                                        <input id="job-deadline" class="form-control" placeholder="Deadline to apply" name="deadline" type="text" value="">
+                                    </div>
+                                    <!-- Change this to a button or input when using this as a form -->
+                                    <div class="form-group">
+                                        <button id="add-new-job-button" type="submit" class="btn btn-lg btn-success btn-block">Post new job</button>
+                                    </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.row -->
+    </div>
+    <!-- /.container-fluid -->
+</div>
+
+
+
+<script type="text/javascript">
+        $.ajax({
+         url: "api/types",
+         type: "GET",
+         beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
+         success: function(data) {
+           console.log(data);
+           var html = "";
+           for(var i = 0; i < data.length; i++){
+              html += '<option>'+data[i].name_of_type+'</option>';
+           }
+           $("#job-type").html(html);
+         }
+      });
+      $.ajax({
+       url: "api/categories",
+       type: "GET",
+       beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
+       success: function(data) {
+         console.log(data);
+         var html = "";
+         for(var i = 0; i < data.length; i++){
+            html += '<option>'+data[i].name_of_category+'</option>';
+         }
+         $("#job-category").html(html);
+       }
+      });
+
+  $("#new-job").on("submit", function(e){
+          e.preventDefault();
+          console.log("submit");
+          addJob();
+      });
+
+  function addJob(){
+      var jobInfo = {
+        'title' : $('#job-title').val(),
+        'description' : $('#job-description').val(),
+        'type' : $('#job-type').val(),
+        'category' : $('#job-category').val(),
+        'country' : $('#job-country').val(),
+        'city' : $('#job-city').val(),
+        'deadline' : $("#job-deadline").val()
+      };
+
+
+      $.ajax({
+       url: "api/company/jobs",
+       type: "POST",
+       data: jobInfo,
+       beforeSend: function(xhr){xhr.setRequestHeader('Authorization', localStorage.getItem("token"));},
+       success: function(data) {
+         console.log(data);
+         toastr.success("You have successfully posted a new job");
+         window.location = "index.html";
+         }
+       }).fail(function(response) {
+         console.log(response);
+           toastr.error(response.responseJSON.message);
+           $("#apply-button").prop('disabled',false);
+       });
+  };
+
+
+</script>

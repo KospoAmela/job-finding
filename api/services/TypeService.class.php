@@ -9,12 +9,8 @@ class TypeService extends BaseService{
       $this->dao=new TypeDao();
   }
 
-  public function getTypes($search){
-      if($search){
-          return $this->dao->searchType($search);
-      }else{
-          return $this->dao->getAllTypes();
-      }
+  public function getTypes(){
+      return $this->dao->getAllTypes();
   }
 
   public function add($type){

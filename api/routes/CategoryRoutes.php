@@ -6,8 +6,7 @@
  * )
  */
 Flight::route('GET /categories', function(){
-    $search = Flight::query("search");
-    Flight::json(Flight::categoryService()->getCategories($search));
+    Flight::json(Flight::categoryService()->getCategories());
 });
 
 /**

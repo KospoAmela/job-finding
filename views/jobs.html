@@ -14,8 +14,7 @@
                     <div class="panel-heading">
                         Jobs
                     </div>
-                    <button type="button" id="add-new-job-button" onclick="showAddNewJobForm();"class="btn btn-primary btn-lg hidden">Add new job</button>
-                    <!-- /.panel-heading -->
+                    <button type="button" id="add-new-job-button" onclick="showAddNewJobForm();" class="btn btn-primary btn-lg btn-block hidden">Add new job</button>                    <!-- /.panel-heading -->
                     <div class="panel-body">
                         <div class="table-responsive">
                             <table id="jobs-table" class="table table-striped table-bordered table-hover" id="dataTables-example">
@@ -47,47 +46,10 @@
 
     </div>
     <!-- /.container-fluid -->
-    <div id="new-job-form-container" class="row hidden">
-        <div class="col-md-4 col-md-offset-4">
-            <div class="login-panel panel panel-default">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Register form</h3>
-                </div>
-                <div class="panel-body">
-                    <form id="register-form" role="form">
-                        <fieldset>
-                            <div class="form-group">
-                                <input id="register-name" class="form-control" placeholder="Name" name="name" type="text" autofocus>
-                            </div>
-                            <div class="form-group">
-                                <input id="register-surname" class="form-control" placeholder="Surname" name="surname" type="text" autofocus>
-                            </div>
-                            <div class="form-group">
-                                <input id = "register-email" class="form-control" placeholder="E-mail" name="email" type="email" autofocus>
-                            </div>
-                            <div class="form-group">
-                                <input id="register-username" class="form-control" placeholder="Username" name="username" type="text" autofocus>
-                            </div>
-                            <div class="form-group">
-                                <input id="register-password" class="form-control" placeholder="Password" name="password" type="password" value="">
-                            </div>
-                            <!-- Change this to a button or input when using this as a form -->
-                            <div class="form-group">
-                                <button id="register-link" type="submit" class="btn btn-lg btn-success btn-block">Register</button>
-                                <button id="company-account-button" onclick="showCompanyRegistrationForm();" type="button" class="btn btn-default">Create company account</button>
-                            </div>
-                            <div class="form-group pull-right">
-                                <a href="#" onclick="showLoginForm()">Back to login</a>
-                            </div>
-                        </fieldset>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
 
 </div>
 <!-- /#page-wrapper -->
+
 <script type="text/javascript">
 
   var id = localStorage.getItem("job_id");
@@ -98,14 +60,6 @@
     $("#add-new-job-button").removeClass("hidden");
   }
 
-  $("#new-job").on("submit", function(e){
-          e.preventDefault();
-          console.log("submit");
-          addJob();
-      });
-  function addJob(){
-      console.log("added job");
-  };
 
     getJobs();
 
@@ -145,7 +99,6 @@
     }
 
     function showAddNewJobForm(){
-      $("#jobs-list").addClass("hidden");
-      $("#new-job-form-container").removeClass("hidden");
+      window.location = "#add-new-job";
     }
 </script>
