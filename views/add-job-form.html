@@ -66,6 +66,7 @@
          type: "GET",
          beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
          success: function(data) {
+           console.log(data);
            var html = "";
            for(var i = 0; i < data.length; i++){
               html += '<option>'+data[i].name_of_type+'</option>';
@@ -78,6 +79,7 @@
        type: "GET",
        beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
        success: function(data) {
+         console.log(data);
          var html = "";
          for(var i = 0; i < data.length; i++){
             html += '<option>'+data[i].name_of_category+'</option>';
@@ -88,6 +90,7 @@
 
   $("#new-job").on("submit", function(e){
           e.preventDefault();
+          console.log("submit");
           addJob();
       });
 
@@ -109,10 +112,12 @@
        data: jobInfo,
        beforeSend: function(xhr){xhr.setRequestHeader('Authorization', localStorage.getItem("token"));},
        success: function(data) {
+         console.log(data);
          toastr.success("You have successfully posted a new job");
          window.location = "index.html";
          }
        }).fail(function(response) {
+         console.log(response);
            toastr.error(response.responseJSON.message);
            $("#apply-button").prop('disabled',false);
        });

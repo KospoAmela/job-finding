@@ -57,6 +57,7 @@
 
 
 function doApply(){
+  console.log(localStorage.getItem("token"));
   $("#apply-button").prop('disabled', true);
   var application = {
       job_id : id
@@ -67,10 +68,12 @@ function doApply(){
    data: application,
    beforeSend: function(xhr){xhr.setRequestHeader('Authorization', localStorage.getItem("token"));},
    success: function(data) {
+     console.log(data);
      toastr.success("You have successfully applied for this job");
      $("#apply-button").prop('disabled',false);
      }
    }).fail(function(response) {
+     console.log(response);
        toastr.error(response.responseJSON.message);
        $("#apply-button").prop('disabled',false);
    });
