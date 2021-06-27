@@ -49,4 +49,8 @@ class JobDao extends BaseDao
                            WHERE title LIKE CONCAT('%', :title, '%')
                            LIMIT ${limit} OFFSET ${offset}", ["title" => $search]);
     }
+
+    public function getJobsByCompanyId($company_id){
+        return $this->query("SELECT * FROM jobs WHERE company_id = :company_id", ["company_id" => $company_id]);
+    }
 }

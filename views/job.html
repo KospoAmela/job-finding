@@ -19,10 +19,8 @@
               <p id="country" class = "paragraph"></p>
               <p id="city" class = "paragraph"></p>
               <p id="posted_at" class = "paragraph"></p>
-            </div>
-            <hr>
-            <div class="hidden" id="appy-button">
-              <button type="button" id="apply-button" onclick="doApply();" class="btn btn-success">Submit application</button>
+              <hr>
+              <button type="button" id="apply-button" onclick="doApply();" class="btn btn-success hidden">Submit application</button>
             </div>
         </div>
         <!-- /.row -->
@@ -32,35 +30,52 @@
 <!-- /#page-wrapper -->
 <script type="text/javascript">
   var id = localStorage.getItem('job_id');
-  var token = localStorage.getItem('token');
-  if(token.r == "USER"){
-    $("#apply-button").removeClass("hidden");
+  var token = AUtils.parse_jwt(localStorage.getItem("token"));
+
+  function getJob(){
+    if(token.r == "USER"){
+      $("#apply-button").removeClass("hidden");
+    }
+      $.ajax({
+       url: "api/jobs/"+id,
+       type: "GET",
+       beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
+       success: function(data) {
+         $("#title").html("" + data.title);
+         $("#description").html("Job description: <br>" + data.description);
+         $("#company").html("Company: " + data.company);
+         $("#deadline").html(" Deadline to apply: " + data.deadline);
+         $("#type").html("Type of job: " + data.type);
+         $("#category").html("Category of job: " + data.category);
+         $("#country").html("Country: " + data.country);
+         $("#city").html("City: " + data.city);
+         $("#posted_at").html("Job was posted at: " + data.posted_at);
+         }
+       });
   }
-  $.ajax({
-   url: "api/jobs/"+id,
-   type: "GET",
-   beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
-   success: function(data) {
-     $("#title").html("" + data.title);
-     $("#description").html("" + data.description);
-     $("#company").html("" + data.company);
-     $("#deadline").html("" + data.deadline);
-     $("#type").html("" + data.type);
-     $("#category").html("" + data.category);
-     $("#country").html("" + data.country);
-     $("#city").html("" + data.city);
-     $("#posted_at").html("" + data.posted_at);
-     }
-});
+
+
 
 function doApply(){
+  console.log(localStorage.getItem("token"));
   $("#apply-button").prop('disabled', true);
-  $.post( "api/applications", id).done(function( data ) {
-      toastr.success("You have successfully applied for this job");
-      $("#apply-button").prop('disabled',false);
-  }).fail(function(response) {
-      toastr.error(response.responseJSON.message);
-      $("#apply-button").prop('disabled',false);
-  });
+  var application = {
+      job_id : id
+  };
+  $.ajax({
+   url: "api/user/applications",
+   type: "POST",
+   data: application,
+   beforeSend: function(xhr){xhr.setRequestHeader('Authorization', localStorage.getItem("token"));},
+   success: function(data) {
+     console.log(data);
+     toastr.success("You have successfully applied for this job");
+     $("#apply-button").prop('disabled',false);
+     }
+   }).fail(function(response) {
+     console.log(response);
+       toastr.error(response.responseJSON.message);
+       $("#apply-button").prop('disabled',false);
+   });
 };
 </script>

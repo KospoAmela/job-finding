@@ -23,18 +23,11 @@ class JobApplicationDao extends BaseDao
         return $this->queryUnique("SELECT * FROM job_applications WHERE application_id = :application_id", ["application_id" => $application_id]);
     }
 
-    public function getApplicationByUserAndJobId($user_id, $job_id)
-    {
-        return $this->queryUnique("SELECT * FROM job_applications WHERE user_id = :user_id AND job_id = :job_id", ["user_id" => $user_id, "job_id" => $job_id]);
-    }
-
     public function insertApplication($application)
     {
-        $this->insert($application, "job_applications");
+        return $this->insert("job_applications", $application);
     }
 
-    public function getApplicationsByCompanyId($company_id){
-        return $this->query("SELECT * FROM job_applications WHERE company_id = :company_id", ["company_id" => $company_id]);
-    }
+
 
 }
