@@ -4,7 +4,7 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 /**
- * @OA\Get(path="/users", security={{"ApiKeyAuth":{}}},
+ * @OA\Get(path="/admin/users", security={{"ApiKeyAuth":{}}},
  *     @OA\Parameter(type="string", in="header", allowReserved=true, name="Authorization", example="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjI4IiwiciI6IlVTRVIifQ.eaWexDbQyBq3P_lz5KNamnA-6roViLKAPjcuEnEBZrw"),
  *     @OA\Response(response="200", description="List users from database")
  * )
@@ -31,7 +31,7 @@ Flight::route('GET /admin/users', function(){
 });
 
 /**
- * @OA\Get(path="/users/{id}", tags="user",  security={{"ApiKeyAuth":{}}},
+ * @OA\Get(path="/user/users/{id}", tags="user",  security={{"ApiKeyAuth":{}}},
  *     @OA\Parameter(type="integer", in="path", allowReserved=true, name="id", example=1),
  *     @OA\Parameter(type="string", in="header", allowReserved=true, name="Authorization", example="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjI4IiwiciI6IlVTRVIifQ.eaWexDbQyBq3P_lz5KNamnA-6roViLKAPjcuEnEBZrw"),
  *     @OA\Response(response="200", description="Get a user from database corresponding to id")
@@ -42,7 +42,18 @@ Flight::route('GET /user/users', function(){
 });
 
 /**
- * @OA\Post(path="/users",
+ * @OA\Post(path="/register",
+ *        @OA\RequestBody(description="Basic user info", required=true,
+ *          @OA\MediaType(mediaType="application/json",
+ *      			@OA\Schema(
+ *          				 @OA\Property(property="name", required="true", type="string", example="Amela",	description="Name of the person" ),
+ *           				 @OA\Property(property="surname", required="true", type="string", example="Kospo",	description="Surname of the person" ),
+ *          				 @OA\Property(property="username", required="true", type="string", example="amelak1",	description="Unique username" ),
+ *                   @OA\Property(property="email", required="true", type="string", example="kospoamela1@gmail.com",	description="email" ),
+ *           				 @OA\Property(property="password", required="true", type="string", example="password123",	description="Password for the account" )
+ *              )
+ *             )
+ *           ),
  *     @OA\Response(response="200", description="Add a user to database")
  * )
  */
@@ -51,19 +62,19 @@ Flight::route('POST /register', function(){
 });
 
 /**
- * @OA\Put(path="/users/{id}",
- *     @OA\Parameter(@OA\Schema(type="integer"), in="path", allowReserved=true, name="id", example=1),
+ * @OA\Put(path="/user/update",security={{"ApiKeyAuth":{}}},
+ *     @OA\Parameter(type="string", in="header", allowReserved=true, name="Authorization", example="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjI4IiwiciI6IlVTRVIifQ.eaWexDbQyBq3P_lz5KNamnA-6roViLKAPjcuEnEBZrw"),
  *     @OA\Response(response="200", description="Update a user in the database corresponding to id")
  * )
  */
-Flight::route('PUT /user/users/update', function(){
+Flight::route('PUT /user/update', function(){
     $user = Flight::userService()->update(Flight::get('user')['id'], Flight::request()->data->getData());
     Flight::json($user);
 });
 
 /**
- * @OA\Get(path="/users/confirm/{token}",
- *     @OA\Parameter(@OA\Schema(type="integer"), in="path", allowReserved=true, name="token", example=1),
+ * @OA\Get(path="/confirm/{token}",
+ *     @OA\Parameter(@OA\Schema(type="string"), in="path", allowReserved=true, name="token", example=1),
  *     @OA\Response(response="200", description="Activate a user account")
  * )
  */
@@ -72,8 +83,16 @@ Flight::route('GET /confirm/@token', function($token){
 });
 
 /**
- * @OA\Get(path="/users/login",
- *     @OA\Response(response="200", description="Validate login credentials")
+ * @OA\Get(path="/login",
+ *      @OA\RequestBody(description="Basic account info", required=true,
+ *          @OA\MediaType(mediaType="application/json",
+ *      			@OA\Schema(
+ *                   @OA\Property(property="email", required="true", type="string", example="kospoamela1@gmail.com",	description="email" ),
+ *           				 @OA\Property(property="password", required="true", type="string", example="password123",	description="Password for the account" )
+ *              )
+ *             )
+ *           ),
+ *     @OA\Response(response="200", description="Validate login credentials for user or company account")
  * )
  */
 Flight::route('POST /login', function(){
@@ -81,14 +100,20 @@ Flight::route('POST /login', function(){
       $data = Flight::userCompanyService()->login(Flight::request()->data->getData());
       Flight::json(Flight::jwt($data));
     } catch (\Exception $e) {
-
       Flight::json(["message" => $e->getMessage()], 401);
     }
 });
 
 /**
- * @OA\Get(path="/users/forgot",
- *     @OA\Response(response="200", description="Get recovery link for a forgotten password")
+ * @OA\Get(path="/forgot",
+ *      @OA\RequestBody(description="New category info", required=true,
+ *          @OA\MediaType(mediaType="application/json",
+ *      			@OA\Schema(
+ *                   @OA\Property(property="email", required="true", type="string", example="kospoamela1@gmail.com",	description="email" )
+ *              )
+ *             )
+ *           ),
+ *     @OA\Response(response="200", description="Add a new category")
  * )
  */
 Flight::route('POST /forgot', function(){
@@ -98,6 +123,14 @@ Flight::route('POST /forgot', function(){
 
 /**
  * @OA\Get(path="/users/reset",
+ *      @OA\RequestBody(description="Basic account info", required=true,
+ *          @OA\MediaType(mediaType="application/json",
+ *      			@OA\Schema(
+ *                   @OA\Property(property="token", required="true", type="string", example="3b4abe23b8e6946077cae9426f92910c",	description="Token recieved on email" ),
+ *           				 @OA\Property(property="password", required="true", type="string", example="password123",	description="New password for the account" )
+ *              )
+ *             )
+ *           ),
  *     @OA\Response(response="200", description="Reset password")
  * )
  */

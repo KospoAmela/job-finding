@@ -20,7 +20,14 @@ Flight::route('GET /categories/@id', function($id){
 });
 
 /**
- * @OA\Post(path="/categories",
+ * @OA\Post(path="/admin/categories",
+ *      @OA\RequestBody(description="Basic account info", required=true,
+ *          @OA\MediaType(mediaType="application/json",
+ *      			@OA\Schema(
+ *                   @OA\Property(property="name_of_category", required="true", type="string", example="Tourism",	description="Work field" )
+ *              )
+ *             )
+ *           ),
  *     @OA\Response(response="200", description="Add a category to database")
  * )
  */

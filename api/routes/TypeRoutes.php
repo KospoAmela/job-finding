@@ -21,6 +21,13 @@ Flight::route('GET /types/@id', function($id){
 
 /**
  * @OA\Post(path="/types",
+ *      @OA\RequestBody(description="New type info", required=true,
+ *          @OA\MediaType(mediaType="application/json",
+ *      			@OA\Schema(
+ *                   @OA\Property(property="name_of_type", required="true", type="string", example="Internship",	description="Type of employment" )
+ *              )
+ *             )
+ *           ),
  *     @OA\Response(response="200", description="Add a type to database")
  * )
  */
